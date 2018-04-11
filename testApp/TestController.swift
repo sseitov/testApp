@@ -11,6 +11,12 @@ import MobileCoreServices
 import AVFoundation
 import AVKit
 
+extension OutputStream {
+    func write(data: Data) -> Int {
+        return data.withUnsafeBytes { write($0, maxLength: data.count) }
+    }
+}
+
 class TestController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     var files:[URL] = []
@@ -48,7 +54,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         let url = files[indexPath.row]
         cell.textLabel?.text = url.lastPathComponent
         cell.detailTextLabel?.text = "\(fileSizeFromURL(url))"
-        if url.pathExtension == "MOV" {
+        if url.pathExtension.lowercased() == "mov" {
             cell.accessoryType = .detailDisclosureButton
         } else if url.pathExtension == "m3u8" {
             cell.accessoryType = .disclosureIndicator
@@ -78,7 +84,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let url = files[indexPath.row]
-        if url.pathExtension == "MOV" {
+        if url.pathExtension.lowercased() == "mov" {
             performSegue(withIdentifier: "showMovie", sender: url)
         } else if url.pathExtension == "m3u8" {
             performSegue(withIdentifier: "showText", sender: url)
@@ -91,10 +97,40 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         let hlsURL = mediaDirectory().appendingPathComponent("list.m3u8")
         if hls.open(url.relativePath, info: nil) {
             hls.convert(to: hlsURL.relativePath, doSegments: true, progressBlock: { progress in
-                print(progress)
+                print(">>>>>>>>>> segmenting \(progress)")
             }, completionBlock: { success in
-                self.refresh()
+                hls.close()
                 if success {
+                    let tsFile = mediaDirectory().appendingPathComponent("output.ts")
+                    let stream = OutputStream(url: tsFile, append: false)
+                    let tsContent = dirContent(mediaDirectory()).filter( {url in
+                        return url.pathExtension == "ts"
+                    })
+                    let sorted = tsContent.sorted(by: { url1, url2 in
+                        return url1.relativePath < url2.relativePath
+                    })
+                    stream?.open()
+                    for file in sorted {
+                        if let data = try? Data(contentsOf: file) {
+                            _ = stream?.write(data: data)
+                            print("wrine \(file.lastPathComponent)")
+                        }
+                        try? FileManager.default.removeItem(at: file)
+                    }
+                    stream?.close()
+                    
+                    let info = hls.info
+                    hls.close()
+                    
+                    if hls.open(tsFile.relativePath, info: info) {
+                        let outFile = mediaDirectory().appendingPathComponent("output.mov")
+                        hls.convert(to: outFile.relativePath, doSegments: false, progressBlock: { progress in
+                            print("<<<<<<<<<<< desegmenting \(progress)")
+                        }, completionBlock: { success in
+                            print(success)
+                            self.refresh()
+                        })
+                    }
                 } else {
                     print("error")
                 }
