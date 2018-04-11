@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,16 +14,16 @@
         <scene sceneID="KHU-uh-U5G">
             <objects>
                 <tableViewController id="doO-pi-aoT" customClass="TestController" customModule="testApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="WpI-zX-fcO">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="WpI-zX-fcO">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" textLabel="dlw-EN-C6m" detailTextLabel="52Q-tC-2I0" style="IBUITableViewCellStyleSubtitle" id="BqX-eP-6H3">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="detailButton" indentationWidth="10" reuseIdentifier="cell" textLabel="dlw-EN-C6m" detailTextLabel="52Q-tC-2I0" style="IBUITableViewCellStyleSubtitle" id="BqX-eP-6H3">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BqX-eP-6H3" id="SZB-RP-doj">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="327" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dlw-EN-C6m">
@@ -48,11 +49,62 @@
                             <outlet property="delegate" destination="doO-pi-aoT" id="5ip-MQ-fFA"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="I3h-ks-gxm"/>
+                    <navigationItem key="navigationItem" id="I3h-ks-gxm">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="yNo-SK-K2H">
+                            <connections>
+                                <action selector="addMoview:" destination="doO-pi-aoT" id="aQH-3O-oi0"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <segue destination="Z5C-XX-kFp" kind="presentation" identifier="showMovie" id="sxV-7B-zcq"/>
+                        <segue destination="Ca2-lk-67Q" kind="show" identifier="showText" id="RvM-qH-nLM"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JN4-Nk-th3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="748" y="145"/>
+        </scene>
+        <!--Text Controller-->
+        <scene sceneID="qOb-0H-MDC">
+            <objects>
+                <viewController id="Ca2-lk-67Q" customClass="TextController" customModule="testApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1zF-Fa-ZMw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="0Lp-7R-QXK">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="0Lp-7R-QXK" firstAttribute="leading" secondItem="Myp-Im-06k" secondAttribute="leading" id="CP7-KT-tG4"/>
+                            <constraint firstItem="0Lp-7R-QXK" firstAttribute="top" secondItem="Myp-Im-06k" secondAttribute="top" id="Mhf-s0-zV1"/>
+                            <constraint firstItem="Myp-Im-06k" firstAttribute="bottom" secondItem="0Lp-7R-QXK" secondAttribute="bottom" id="cnP-Su-i7Q"/>
+                            <constraint firstItem="Myp-Im-06k" firstAttribute="trailing" secondItem="0Lp-7R-QXK" secondAttribute="trailing" id="jAa-U2-wPO"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Myp-Im-06k"/>
+                    </view>
+                    <connections>
+                        <outlet property="textView" destination="0Lp-7R-QXK" id="hNx-TY-c7l"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2mS-Id-rWw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1676" y="408"/>
+        </scene>
+        <!--AV Player View Controller-->
+        <scene sceneID="eYY-t5-wpW">
+            <objects>
+                <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="Z5C-XX-kFp" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="N9L-D1-Qw4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1676" y="-393"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FDK-fc-Ils">

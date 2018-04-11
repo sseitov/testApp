@@ -22,6 +22,7 @@ typedef void(^HLS_CompletionBlock)(BOOL success);
 @interface HLS_Converter : NSObject
 
 - (BOOL)open:(NSString*)inPath info:(HLS_Info*)info;
+- (void)close;
 - (void)convertTo:(NSString*)outPath doSegments:(BOOL)doSegments progressBlock:(HLS_ProgressBlock)progressBlock completionBlock:(HLS_CompletionBlock)completionBlock;
 
 @property (atomic) BOOL cancelOperation;
