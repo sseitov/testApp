@@ -29,7 +29,6 @@
 		2CE20EF4207DEC4300EA1ADF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CE20EF3207DEC4300EA1ADF /* CoreMedia.framework */; };
 		2CE20EF6207DEC4B00EA1ADF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CE20EF5207DEC4B00EA1ADF /* AVFoundation.framework */; };
 		2CE20EF8207DEF3100EA1ADF /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE20EF7207DEF3100EA1ADF /* Utils.swift */; };
-		2CE20EFA207E09E800EA1ADF /* TextController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE20EF9207E09E800EA1ADF /* TextController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,7 +58,6 @@
 		2CE20EF3207DEC4300EA1ADF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		2CE20EF5207DEC4B00EA1ADF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		2CE20EF7207DEF3100EA1ADF /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		2CE20EF9207E09E800EA1ADF /* TextController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextController.swift; sourceTree = "<group>"; };
 		4A5BEA2798F7E6C01F83A752 /* Pods-testApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-testApp/Pods-testApp.release.xcconfig"; sourceTree = "<group>"; };
 		EFDDC38ACBA5FAD245706879 /* libPods-testApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-testApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -134,7 +132,6 @@
 				2CE20EDB207DEAD700EA1ADF /* HLS_Converter.h */,
 				2CE20EDA207DEAD700EA1ADF /* HLS_Converter.m */,
 				2CE20ED5207DE54D00EA1ADF /* TestController.swift */,
-				2CE20EF9207E09E800EA1ADF /* TextController.swift */,
 				2CE20EC3207DE50400EA1ADF /* AppDelegate.swift */,
 				2CE20EF7207DEF3100EA1ADF /* Utils.swift */,
 				2CE20EC7207DE50400EA1ADF /* Main.storyboard */,
@@ -271,7 +268,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CE20EC4207DE50400EA1ADF /* AppDelegate.swift in Sources */,
-				2CE20EFA207E09E800EA1ADF /* TextController.swift in Sources */,
 				2CE20EDC207DEAD700EA1ADF /* HLS_Converter.m in Sources */,
 				2CE20ED6207DE54D00EA1ADF /* TestController.swift in Sources */,
 				2CE20EF8207DEF3100EA1ADF /* Utils.swift in Sources */,

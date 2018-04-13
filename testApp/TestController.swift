@@ -16,10 +16,22 @@ extension OutputStream {
         return data.withUnsafeBytes { write($0, maxLength: data.count) }
     }
 }
+extension String {
+    
+    func digitsFromString() -> String {
+        let digitSet = CharacterSet.decimalDigits
+        let filteredCharacters = self.filter {
+            return  String($0).rangeOfCharacter(from: digitSet) != nil
+        }
+        return String(filteredCharacters)
+    }
+    
+}
 
 class TestController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     var files:[URL] = []
+    var meta:[AnyHashable:Any]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,9 +45,20 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     }
     
     func refresh() {
-        files = dirContent(mediaDirectory()).sorted(by: { url1, url2 in
-            return url1.relativePath < url2.relativePath
+        files = dirContent(mediaDirectory()).filter({ file in
+            return file.pathExtension.lowercased() == "mov"
         })
+        tableView.reloadData()
+    }
+
+    func clear() {
+        clearURL(mediaDirectory())
+        do {
+            try FileManager.default.createDirectory(at: mediaDirectory(), withIntermediateDirectories: false, attributes: nil)
+        } catch {
+            print(error.localizedDescription)
+        }
+        meta = nil
         tableView.reloadData()
     }
     
@@ -54,16 +77,15 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         let url = files[indexPath.row]
         cell.textLabel?.text = url.lastPathComponent
         cell.detailTextLabel?.text = "\(fileSizeFromURL(url))"
-        if url.pathExtension.lowercased() == "mov" {
-            cell.accessoryType = .detailDisclosureButton
-        } else if url.pathExtension == "m3u8" {
-            cell.accessoryType = .disclosureIndicator
-        } else {
-            cell.accessoryType = .none
-        }
         return cell
     }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        performSegue(withIdentifier: "showMovie", sender: files[indexPath.row])
+    }
 
+/*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
@@ -79,16 +101,6 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        let url = files[indexPath.row]
-        if url.pathExtension.lowercased() == "mov" {
-            performSegue(withIdentifier: "showMovie", sender: url)
-        } else if url.pathExtension == "m3u8" {
-            performSegue(withIdentifier: "showText", sender: url)
-        }
     }
 
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
@@ -137,7 +149,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             })
         }
     }
-    
+ */
     /*
     // Override to support rearranging the table view.
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
@@ -161,18 +173,16 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             let player = AVPlayer(url: url)
             let next = segue.destination as! AVPlayerViewController
             next.player = player
-        } else if segue.identifier == "showText" {
-            let next = segue.destination as! TextController
-            next.data = try? Data(contentsOf: url)
         }
     }
     
     // MARK: - UIImagePickerController delegate
+    
     @IBAction func addMoview(_ sender: Any) {
-        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let imagePickerController = UIImagePickerController()
-            imagePickerController.sourceType = .camera
-            imagePickerController.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera)!
+            imagePickerController.sourceType = .photoLibrary
+            imagePickerController.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
             imagePickerController.delegate = self
             imagePickerController.allowsEditing = false
             imagePickerController.videoQuality = .typeHigh
@@ -187,9 +197,19 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                 if let url = info[UIImagePickerControllerMediaURL] as? URL {
                     let name = "\(self.dateFormatter.string(from: Date())).MOV"
                     let dstURL = mediaDirectory().appendingPathComponent(name)
+                    self.clear()
                     do {
-                        try FileManager.default.moveItem(at: url, to: dstURL)
-                        self.refresh()
+                        try FileManager.default.copyItem(at: url, to: dstURL)
+                        let hlsURL = mediaDirectory().appendingPathComponent("index.m3u8")
+                        self.convertVideo(dstURL, to: hlsURL, info: nil, result: { meta in
+                            if meta != nil {
+                                self.meta = meta
+                                self.refresh()
+                            } else {
+                                print("import error")
+                                self.clear()
+                            }
+                        })
                     } catch {
                         print(error.localizedDescription)
                     }
@@ -201,6 +221,79 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func export(_ sender: Any) {
+        
+        let tsContent = dirContent(mediaDirectory()).filter( {url in
+            return url.pathExtension == "ts"
+        })
+
+        let sorted = tsContent.sorted(by: { url1, url2 in
+            if let num1 = Int(url1.lastPathComponent.digitsFromString()), let num2 = Int(url2.lastPathComponent.digitsFromString()) {
+                return num1 < num2
+            } else {
+                return false
+            }
+        })
+        
+        let tsFile = mediaDirectory().appendingPathComponent("output.ts")
+        let stream = OutputStream(url: tsFile, append: false)
+        stream?.open()
+        for file in sorted {
+            print(file.lastPathComponent)
+            if let data = try? Data(contentsOf: file) {
+                _ = stream?.write(data: data)
+            }
+        }
+        stream?.close()
+        print(fileSizeFromURL(tsFile))
+        let exportURL = mediaDirectory().appendingPathComponent("export.mov")
+        convertVideo(tsFile, to: exportURL, info: meta, result: { info in
+            if info != nil {
+                self.refresh()
+            } else {
+                self.clear()
+            }
+        })
+    }
+    
+    private func convertVideo(_ from:URL, to:URL, info:[AnyHashable : Any]?, result: (([AnyHashable : Any]?) -> Void)!) {
+        let converter = HLS_Converter()
+
+        var meta:[AnyHashable : Any]?
+        if (info == nil) {
+            meta = converter.open(from.relativePath)
+            if meta == nil {
+                result(nil)
+                return
+            }
+        } else if !converter.open(withInfo: from.relativePath) {
+            result(nil)
+            return
+        }
+        
+        let fileSize = fileSizeFromURL(from)
+        var currentProgress = 0
+        converter.convert(to: to.relativePath, info: info, progressBlock: { progress in
+            if progress <= fileSize {
+                let newProgress = Int(Double(progress)/Double(fileSize) * 100.0)
+                if (newProgress >  currentProgress) {
+                    currentProgress = newProgress
+                    print(currentProgress)
+                }
+            }
+        }, completionBlock: { success in
+            if success {
+                if info == nil {
+                    result(meta)
+                } else {
+                    result(info)
+                }
+            } else {
+                result(nil)
+            }
+        })
     }
 
 }

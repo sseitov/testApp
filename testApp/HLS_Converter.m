@@ -16,18 +16,6 @@
 #include <libavutil/opt.h>
 #include <libavutil/pixdesc.h>
 
-@implementation HLS_Info
-
--(id)init {
-    if (self = [super init]) {
-        self.fileMeta = [NSMutableDictionary dictionary];
-        self.videoMeta = [NSMutableDictionary dictionary];
-    }
-    return self;
-}
-
-@end
-
 
 @interface HLS_Converter () {
     dispatch_queue_t hlsQueue;
@@ -120,35 +108,38 @@
     return a;
 }
 
-- (BOOL)open:(NSString*)inPath info:(HLS_Info*)info {
+- (NSDictionary*)open:(NSString*)inPath {
     if ([self open_input_file:inPath.UTF8String] == 0) {
-        if (info) {
-            self.info = info;
-        } else {
-            self.info = [[HLS_Info alloc] init];
-            
-            // Copy file metadata
-            AVDictionaryEntry *tag = NULL;
-            while ((tag = av_dict_get(ifmt_ctx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
-                NSLog(@"%s - %s\n", tag->value, tag->key);
-                [self.info.fileMeta setObject:[NSString stringWithFormat:@"%s", tag->value] forKey:[NSString stringWithFormat:@"%s", tag->key]];
-            }
-            
-            // Copy video metadata
-            AVStream* stream = ifmt_ctx->streams[videoIndex];
-            while ((tag = av_dict_get(stream->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
-                NSLog(@"%s - %s\n", tag->value, tag->key);
-                [self.info.videoMeta setObject:[NSString stringWithFormat:@"%s",tag->value] forKey:[NSString stringWithFormat:@"%s",tag->key]];
-            }
-            if (stream->side_data && stream->side_data->type == AV_PKT_DATA_DISPLAYMATRIX) {
-                self.info.matrix = [NSData dataWithBytes:stream->side_data->data length:stream->side_data->size];
-            }
+        // Copy file metadata
+        NSMutableDictionary *fileMeta = [NSMutableDictionary dictionary];
+        AVDictionaryEntry *tag = NULL;
+        while ((tag = av_dict_get(ifmt_ctx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
+            NSLog(@"%s - %s\n", tag->value, tag->key);
+            [fileMeta setObject:[NSString stringWithFormat:@"%s", tag->value] forKey:[NSString stringWithFormat:@"%s", tag->key]];
         }
         
-        return YES;
+        // Copy video metadata
+        NSMutableDictionary *videoMeta = [NSMutableDictionary dictionary];
+        AVStream* stream = ifmt_ctx->streams[videoIndex];
+        while ((tag = av_dict_get(stream->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
+            NSLog(@"%s - %s\n", tag->value, tag->key);
+            [videoMeta setObject:[NSString stringWithFormat:@"%s",tag->value] forKey:[NSString stringWithFormat:@"%s",tag->key]];
+        }
+        
+        // Copy video matrix
+        NSMutableData* matrix = [NSMutableData data];
+        if (stream->side_data && stream->side_data->type == AV_PKT_DATA_DISPLAYMATRIX) {
+            [matrix setData:[NSData dataWithBytes:stream->side_data->data length:stream->side_data->size]];
+        }
+        
+        return @{@"fileMeta" : fileMeta, @"videoMeta" : videoMeta, @"matrix" : matrix};
     } else {
-        return NO;
+        return NULL;
     }
+}
+
+- (BOOL)openWithInfo:(NSString*)inPath {
+    return ([self open_input_file:inPath.UTF8String] == 0);
 }
 
 - (int)open_input_file:(const char *)filename {
@@ -193,7 +184,7 @@
     return 0;
 }
 
-- (BOOL)create_output_file:(const char*)filename doSegments:(BOOL)doSegments {
+- (BOOL)create_output_file:(const char*)filename info:(NSDictionary*)info {
     
     int ret = avformat_alloc_output_context2(&ofmt_ctx, NULL, NULL, filename);
     if (ret < 0) {
@@ -201,9 +192,10 @@
         return NO;
     }
 
-    if (self.info.fileMeta) {
-        for (NSString* key in [self.info.fileMeta allKeys]) {
-            NSString* value = [self.info.fileMeta objectForKey:key];
+    if (info) {
+        NSDictionary* fileMeta = [info objectForKey:@"fileMeta"];
+        for (NSString* key in [fileMeta allKeys]) {
+            NSString* value = [fileMeta objectForKey:key];
             av_dict_set(&ofmt_ctx->metadata, key.UTF8String, value.UTF8String, 0);
         }
     }
@@ -246,20 +238,23 @@
                 }
                 out_ctx->extradata_size = in_ctx->extradata_size;
                 
-                if (self.info.videoMeta) {
-                    for (NSString* key in [self.info.videoMeta allKeys]) {
-                        NSString* value = [self.info.videoMeta objectForKey:key];
+                if (info) {
+                    NSDictionary * videoMeta = [info objectForKey:@"videoMeta"];
+                    for (NSString* key in [videoMeta allKeys]) {
+                        NSString* value = [videoMeta objectForKey:key];
                         av_dict_set(&out_stream->metadata, key.UTF8String, value.UTF8String, 0);
                     }
-                }
-                if (self.info.matrix) {
-                    out_stream->side_data = malloc(sizeof(AVPacketSideData*));
-                    out_stream->nb_side_data = 1;
-                    AVPacketSideData* side_data = &out_stream->side_data[0];
-                    side_data->type = AV_PKT_DATA_DISPLAYMATRIX;
-                    side_data->size = (int)self.info.matrix.length;
-                    side_data->data = malloc(side_data->size);
-                    memcpy(side_data->data, self.info.matrix.bytes, side_data->size);
+                    
+                    NSData* matrix = [info objectForKey:@"matrix"];
+                    if (matrix.length > 0) {
+                        out_stream->side_data = malloc(sizeof(AVPacketSideData*));
+                        out_stream->nb_side_data = 1;
+                        AVPacketSideData* side_data = &out_stream->side_data[0];
+                        side_data->type = AV_PKT_DATA_DISPLAYMATRIX;
+                        side_data->size = (int)matrix.length;
+                        side_data->data = malloc(side_data->size);
+                        memcpy(side_data->data, matrix.bytes, side_data->size);
+                    }
                 }
                 
             } else {
@@ -281,7 +276,7 @@
         }
     }
     
-    if (doSegments) {
+    if (info == NULL) {
         av_opt_set_int(ofmt_ctx->priv_data, "hls_list_size", 0, 0);
     }
     
@@ -303,20 +298,19 @@
         return YES;
     }
 }
-/*
- */
-- (void)convertTo:(NSString*)outPath doSegments:(BOOL)doSegments progressBlock:(HLS_ProgressBlock)progressBlock completionBlock:(HLS_CompletionBlock)completionBlock {
+
+- (void)convertTo:(NSString*)outPath info:(NSDictionary*)info progressBlock:(HLS_ProgressBlock)progressBlock completionBlock:(HLS_CompletionBlock)completionBlock {
     
     dispatch_async(hlsQueue, ^{
         unsigned int stream_index;
         AVBitStreamFilterContext *filter = 0;
         int ret = -1;
         
-        if (![self create_output_file:outPath.UTF8String doSegments:doSegments]) {
+        if (![self create_output_file:outPath.UTF8String info:info]) {
             goto end;
         }
         
-        if (doSegments) {
+        if (info == NULL) {
             if (self->ifmt_ctx->streams[self->videoIndex]->codec->codec_id == AV_CODEC_ID_HEVC) {
                 filter = av_bitstream_filter_init("hevc_mp4toannexb");
             } else {
@@ -354,7 +348,7 @@
                                  self->ifmt_ctx->streams[stream_index]->time_base,
                                  self->ofmt_ctx->streams[stream_index]->time_base);
             
-            if (doSegments) {
+            if (info == NULL) {
                 if (stream_index == self->videoIndex) {
                     ret = [self applyBitstreamFilter:filter packet:&packet outputCodecContext:self->ofmt_ctx->streams[stream_index]->codec];
                 }
