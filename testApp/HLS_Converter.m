@@ -118,9 +118,10 @@
             [fileMeta setObject:[NSString stringWithFormat:@"%s", tag->value] forKey:[NSString stringWithFormat:@"%s", tag->key]];
         }
         
+        AVStream* stream = ifmt_ctx->streams[videoIndex];
+        
         // Copy video metadata
         NSMutableDictionary *videoMeta = [NSMutableDictionary dictionary];
-        AVStream* stream = ifmt_ctx->streams[videoIndex];
         while ((tag = av_dict_get(stream->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
             NSLog(@"%s - %s\n", tag->value, tag->key);
             [videoMeta setObject:[NSString stringWithFormat:@"%s",tag->value] forKey:[NSString stringWithFormat:@"%s",tag->key]];
@@ -132,7 +133,12 @@
             [matrix setData:[NSData dataWithBytes:stream->side_data->data length:stream->side_data->size]];
         }
         
-        return @{@"fileMeta" : fileMeta, @"videoMeta" : videoMeta, @"matrix" : matrix};
+        NSNumber* isHevc = @NO;
+        if (stream->codec->codec_id == AV_CODEC_ID_HEVC) {
+            isHevc = @YES;
+        }
+
+        return @{@"fileMeta" : fileMeta, @"videoMeta" : videoMeta, @"matrix" : matrix, @"hevc" : isHevc};
     } else {
         return NULL;
     }
