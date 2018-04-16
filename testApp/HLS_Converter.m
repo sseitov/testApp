@@ -132,13 +132,8 @@
         if (stream->side_data && stream->side_data->type == AV_PKT_DATA_DISPLAYMATRIX) {
             [matrix setData:[NSData dataWithBytes:stream->side_data->data length:stream->side_data->size]];
         }
-        
-        NSNumber* isHevc = @NO;
-        if (stream->codec->codec_id == AV_CODEC_ID_HEVC) {
-            isHevc = @YES;
-        }
 
-        return @{@"fileMeta" : fileMeta, @"videoMeta" : videoMeta, @"matrix" : matrix, @"hevc" : isHevc};
+        return @{@"fileMeta" : fileMeta, @"videoMeta" : videoMeta, @"matrix" : matrix};
     } else {
         return NULL;
     }

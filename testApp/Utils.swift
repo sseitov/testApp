@@ -37,3 +37,9 @@ func dirContent(_ url:URL) -> [URL] {
         return []
     }
 }
+
+func timeToString(_ time:Double) -> String {
+    let min = Int(time) / 60
+    let sec = Int(time) % 60
+    return String(format: "%d:%.2d", min, sec)
+}

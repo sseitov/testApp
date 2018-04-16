@@ -10,6 +10,8 @@ import UIKit
 import MobileCoreServices
 import AVFoundation
 import AVKit
+import Photos
+import AssetsLibrary
 
 extension OutputStream {
     func write(data: Data) -> Int {
@@ -28,10 +30,9 @@ extension String {
     
 }
 
-class TestController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+class TestController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AddAssetControllerDelegate {
 
     var files:[URL] = []
-    var meta:[AnyHashable:Any]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,9 +46,12 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     }
     
     func refresh() {
+        files = dirContent(mediaDirectory())
+/*
         files = dirContent(mediaDirectory()).filter({ file in
             return file.pathExtension.lowercased() == "mov"
         })
+ */
         tableView.reloadData()
     }
 
@@ -58,7 +62,6 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         } catch {
             print(error.localizedDescription)
         }
-        meta = nil
         tableView.reloadData()
     }
     
@@ -82,89 +85,28 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        performSegue(withIdentifier: "showMovie", sender: files[indexPath.row])
-    }
-
-/*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            try? FileManager.default.removeItem(at: files[indexPath.row])
-            files.remove(at: indexPath.row)
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        let url = files[indexPath.row]
+        performSegue(withIdentifier: "showMovie", sender: url)
     }
 
     override func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         let url = files[indexPath.row]
-        let hls = HLS_Converter()
-        let hlsURL = mediaDirectory().appendingPathComponent("list.m3u8")
-        if hls.open(url.relativePath, info: nil) {
-            hls.convert(to: hlsURL.relativePath, doSegments: true, progressBlock: { progress in
-                print(">>>>>>>>>> segmenting \(progress)")
-            }, completionBlock: { success in
-                hls.close()
-                if success {
-                    let tsFile = mediaDirectory().appendingPathComponent("output.ts")
-                    let stream = OutputStream(url: tsFile, append: false)
-                    let tsContent = dirContent(mediaDirectory()).filter( {url in
-                        return url.pathExtension == "ts"
-                    })
-                    let sorted = tsContent.sorted(by: { url1, url2 in
-                        return url1.relativePath < url2.relativePath
-                    })
-                    stream?.open()
-                    for file in sorted {
-                        if let data = try? Data(contentsOf: file) {
-                            _ = stream?.write(data: data)
-                            print("wrine \(file.lastPathComponent)")
-                        }
-                        try? FileManager.default.removeItem(at: file)
-                    }
-                    stream?.close()
-                    
-                    let info = hls.info
-                    hls.close()
-                    
-                    if hls.open(tsFile.relativePath, info: info) {
-                        let outFile = mediaDirectory().appendingPathComponent("output.mov")
-                        hls.convert(to: outFile.relativePath, doSegments: false, progressBlock: { progress in
-                            print("<<<<<<<<<<< desegmenting \(progress)")
-                        }, completionBlock: { success in
-                            print(success)
-                            self.refresh()
-                        })
-                    }
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: url)
+        }, completionHandler: { completed, error in
+            DispatchQueue.main.async {
+                self.refresh()
+                if error != nil {
+                    print(error!.localizedDescription)
+                } else if completed {
+                    print("============ file exported")
                 } else {
-                    print("error")
+                    print("unknown error")
                 }
-            })
-        }
+            }
+        })
     }
- */
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
+    
     // MARK: - Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -179,6 +121,22 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     // MARK: - UIImagePickerController delegate
     
     @IBAction func addMoview(_ sender: Any) {
+        AddAssetController.checkPermission({ enabled in
+            if enabled {
+                let picker = UIStoryboard(name: "AssetPicker", bundle: nil)
+                let nav = picker.instantiateViewController(withIdentifier: "AssetPicker") as? UINavigationController
+                if nav != nil {
+                    if let controller = nav!.topViewController as? AddAssetController {
+                        controller.delegate = self
+                    }
+                    nav!.modalPresentationStyle = .formSheet
+                    self.present(nav!, animated: true, completion: nil)
+                }
+            } else {
+                print("You must enable access to Photo Library in cryptoBox settings.")
+            }
+        })
+/*
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let imagePickerController = UIImagePickerController()
             imagePickerController.sourceType = .photoLibrary
@@ -188,8 +146,9 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             imagePickerController.videoQuality = .typeHigh
             self.present(imagePickerController, animated: true, completion:nil)
         }
+ */
     }
-    
+/*
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let mediaType = info[UIImagePickerControllerMediaType] as! String
         picker.dismiss(animated: true, completion: {
@@ -204,6 +163,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                         self.convertVideo(dstURL, to: hlsURL, info: nil, result: { meta in
                             if meta != nil {
                                 self.meta = meta
+                                print(meta!)
                                 self.refresh()
                             } else {
                                 print("import error")
@@ -222,13 +182,51 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
+ */
+    // MARK: - AddAssetControllerDelegate
     
-    @IBAction func export(_ sender: Any) {
-        
+    func didAssetPickerSelected(_ selectedAssets:NSMutableArray) {
+        if let asset = selectedAssets.object(at: 0) as? AssetWithContent {
+            importAsset(asset)
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func didAssetPickerCanceled() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // MARK: - Import
+
+    func importAsset(_ asset:AssetWithContent) {
+        let options = PHVideoRequestOptions()
+        options.version = .original
+        options.isNetworkAccessAllowed = false
+        _ = PHImageManager.default().requestAVAsset(forVideo: asset.phAsset!, options: options, resultHandler: { avAsset, _, info in
+            guard let urlAsset = avAsset as? AVURLAsset else {
+                return
+            }
+            DispatchQueue.main.async {
+                self.importURL(urlAsset.url)
+            }
+        })
+    }
+
+    func importURL(_ url:URL) {
+        clear()
+        let outURL = mediaDirectory().appendingPathComponent("original.mov")
+        print(outURL.relativePath)
+        try? FileManager.default.copyItem(at: url, to: outURL)
+        refresh()
+    }
+    
+    // MARK: - Export
+
+    func exportTS(_ meta:[AnyHashable:Any]) {
         let tsContent = dirContent(mediaDirectory()).filter( {url in
             return url.pathExtension == "ts"
         })
-
+        
         let sorted = tsContent.sorted(by: { url1, url2 in
             if let num1 = Int(url1.lastPathComponent.digitsFromString()), let num2 = Int(url2.lastPathComponent.digitsFromString()) {
                 return num1 < num2
@@ -244,20 +242,36 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             print(file.lastPathComponent)
             if let data = try? Data(contentsOf: file) {
                 _ = stream?.write(data: data)
+                try? FileManager.default.removeItem(at: file)
             }
         }
         stream?.close()
-        print(fileSizeFromURL(tsFile))
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
         convertVideo(tsFile, to: exportURL, info: meta, result: { info in
+            self.refresh()
             if info != nil {
-                self.refresh()
+                print("success")
             } else {
-                self.clear()
+                print("error")
+            }
+        })
+/*
+*/
+    }
+    
+    @IBAction func export(_ sender: Any) {
+        let inURL = mediaDirectory().appendingPathComponent("original.mov")
+        let outURL = mediaDirectory().appendingPathComponent("index.m3u8")
+        convertVideo(inURL, to: outURL, info: nil, result: { info in
+            if info != nil {
+                try? FileManager.default.removeItem(at: outURL)
+                self.exportTS(info!)
+            } else {
+                print("error")
             }
         })
     }
-    
+
     private func convertVideo(_ from:URL, to:URL, info:[AnyHashable : Any]?, result: (([AnyHashable : Any]?) -> Void)!) {
         let converter = HLS_Converter()
 

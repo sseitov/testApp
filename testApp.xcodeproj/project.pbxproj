@@ -8,13 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		00CB42103C80B989AC699D89 /* libPods-testApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFDDC38ACBA5FAD245706879 /* libPods-testApp.a */; };
+		2C00249C2083284300D58537 /* libx264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C00249B2083284300D58537 /* libx264.a */; };
+		2C00249E2083285A00D58537 /* libx265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C00249D2083285A00D58537 /* libx265.a */; };
+		2C0024A2208328B000D58537 /* libfdk-aac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0024A1208328B000D58537 /* libfdk-aac.a */; };
+		2C0024A3208328D400D58537 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C00249F2083288B00D58537 /* libc++.tbd */; };
+		2C0024A9208341AC00D58537 /* FFmpegTranscoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C0024A8208341AC00D58537 /* FFmpegTranscoder.m */; };
+		2C0024AE208349FF00D58537 /* libpostproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0024AD208349FF00D58537 /* libpostproc.a */; };
+		2C0024B120834BD300D58537 /* HLS_Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C0024B020834BD300D58537 /* HLS_Converter.m */; };
+		2CDBD19820824AE5006B08B3 /* AssetCollectionContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19320824AE5006B08B3 /* AssetCollectionContentController.swift */; };
+		2CDBD19920824AE5006B08B3 /* AddAssetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19420824AE5006B08B3 /* AddAssetController.swift */; };
+		2CDBD19A20824AE5006B08B3 /* AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19520824AE5006B08B3 /* AssetCollectionCell.swift */; };
+		2CDBD19B20824AE5006B08B3 /* AssetPicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CDBD19620824AE5006B08B3 /* AssetPicker.storyboard */; };
+		2CDBD19C20824AE5006B08B3 /* PHAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19720824AE5006B08B3 /* PHAssetCell.swift */; };
 		2CE20EC4207DE50400EA1ADF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE20EC3207DE50400EA1ADF /* AppDelegate.swift */; };
 		2CE20EC9207DE50400EA1ADF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CE20EC7207DE50400EA1ADF /* Main.storyboard */; };
 		2CE20ECB207DE50C00EA1ADF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CE20ECA207DE50C00EA1ADF /* Assets.xcassets */; };
 		2CE20ECE207DE50C00EA1ADF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2CE20ECC207DE50C00EA1ADF /* LaunchScreen.storyboard */; };
 		2CE20ED6207DE54D00EA1ADF /* TestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CE20ED5207DE54D00EA1ADF /* TestController.swift */; };
 		2CE20ED8207DE8F800EA1ADF /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 2CE20ED7207DE8F800EA1ADF /* logo.png */; };
-		2CE20EDC207DEAD700EA1ADF /* HLS_Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CE20EDA207DEAD700EA1ADF /* HLS_Converter.m */; };
 		2CE20EDE207DEBBE00EA1ADF /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CE20EDD207DEBBE00EA1ADF /* libz.tbd */; };
 		2CE20EE0207DEBD800EA1ADF /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CE20EDF207DEBD800EA1ADF /* libbz2.tbd */; };
 		2CE20EE2207DEBE800EA1ADF /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CE20EE1207DEBE800EA1ADF /* libiconv.tbd */; };
@@ -33,6 +44,20 @@
 
 /* Begin PBXFileReference section */
 		2A65DC6C18C3190E2562D2F2 /* Pods-testApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-testApp/Pods-testApp.debug.xcconfig"; sourceTree = "<group>"; };
+		2C00249B2083284300D58537 /* libx264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx264.a; path = "FFmpeg-iOS/lib/libx264.a"; sourceTree = "<group>"; };
+		2C00249D2083285A00D58537 /* libx265.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx265.a; path = "FFmpeg-iOS/lib/libx265.a"; sourceTree = "<group>"; };
+		2C00249F2083288B00D58537 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		2C0024A1208328B000D58537 /* libfdk-aac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libfdk-aac.a"; path = "FFmpeg-iOS/lib/libfdk-aac.a"; sourceTree = "<group>"; };
+		2C0024A7208341AC00D58537 /* FFmpegTranscoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFmpegTranscoder.h; sourceTree = "<group>"; };
+		2C0024A8208341AC00D58537 /* FFmpegTranscoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFmpegTranscoder.m; sourceTree = "<group>"; };
+		2C0024AD208349FF00D58537 /* libpostproc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpostproc.a; path = "FFmpeg-iOS/lib/libpostproc.a"; sourceTree = "<group>"; };
+		2C0024AF20834BD300D58537 /* HLS_Converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLS_Converter.h; sourceTree = "<group>"; };
+		2C0024B020834BD300D58537 /* HLS_Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLS_Converter.m; sourceTree = "<group>"; };
+		2CDBD19320824AE5006B08B3 /* AssetCollectionContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetCollectionContentController.swift; path = AssetPicker/AssetCollectionContentController.swift; sourceTree = "<group>"; };
+		2CDBD19420824AE5006B08B3 /* AddAssetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddAssetController.swift; path = AssetPicker/AddAssetController.swift; sourceTree = "<group>"; };
+		2CDBD19520824AE5006B08B3 /* AssetCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetCollectionCell.swift; path = AssetPicker/AssetCollectionCell.swift; sourceTree = "<group>"; };
+		2CDBD19620824AE5006B08B3 /* AssetPicker.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = AssetPicker.storyboard; path = AssetPicker/AssetPicker.storyboard; sourceTree = "<group>"; };
+		2CDBD19720824AE5006B08B3 /* PHAssetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PHAssetCell.swift; path = AssetPicker/PHAssetCell.swift; sourceTree = "<group>"; };
 		2CE20EC0207DE50300EA1ADF /* testApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = testApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CE20EC3207DE50400EA1ADF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2CE20EC8207DE50400EA1ADF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -42,8 +67,6 @@
 		2CE20ED5207DE54D00EA1ADF /* TestController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestController.swift; sourceTree = "<group>"; };
 		2CE20ED7207DE8F800EA1ADF /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = SOURCE_ROOT; };
 		2CE20ED9207DEAD700EA1ADF /* testApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "testApp-Bridging-Header.h"; sourceTree = "<group>"; };
-		2CE20EDA207DEAD700EA1ADF /* HLS_Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLS_Converter.m; sourceTree = "<group>"; };
-		2CE20EDB207DEAD700EA1ADF /* HLS_Converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLS_Converter.h; sourceTree = "<group>"; };
 		2CE20EDD207DEBBE00EA1ADF /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		2CE20EDF207DEBD800EA1ADF /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		2CE20EE1207DEBE800EA1ADF /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -67,6 +90,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C0024AE208349FF00D58537 /* libpostproc.a in Frameworks */,
+				2C0024A2208328B000D58537 /* libfdk-aac.a in Frameworks */,
+				2C00249E2083285A00D58537 /* libx265.a in Frameworks */,
+				2C00249C2083284300D58537 /* libx264.a in Frameworks */,
 				2CE20EEA207DEBFD00EA1ADF /* libavformat.a in Frameworks */,
 				2CE20EEB207DEBFD00EA1ADF /* libavcodec.a in Frameworks */,
 				2CE20EEC207DEBFD00EA1ADF /* libavfilter.a in Frameworks */,
@@ -74,6 +101,7 @@
 				2CE20EEE207DEBFD00EA1ADF /* libswscale.a in Frameworks */,
 				2CE20EEF207DEBFD00EA1ADF /* libavdevice.a in Frameworks */,
 				2CE20EF0207DEBFD00EA1ADF /* libavutil.a in Frameworks */,
+				2C0024A3208328D400D58537 /* libc++.tbd in Frameworks */,
 				2CE20EE2207DEBE800EA1ADF /* libiconv.tbd in Frameworks */,
 				2CE20EE0207DEBD800EA1ADF /* libbz2.tbd in Frameworks */,
 				2CE20EDE207DEBBE00EA1ADF /* libz.tbd in Frameworks */,
@@ -90,6 +118,11 @@
 		0F3298B0E2BA95F3EA4C6268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2C0024AD208349FF00D58537 /* libpostproc.a */,
+				2C0024A1208328B000D58537 /* libfdk-aac.a */,
+				2C00249F2083288B00D58537 /* libc++.tbd */,
+				2C00249D2083285A00D58537 /* libx265.a */,
+				2C00249B2083284300D58537 /* libx264.a */,
 				2CE20EF5207DEC4B00EA1ADF /* AVFoundation.framework */,
 				2CE20EF3207DEC4300EA1ADF /* CoreMedia.framework */,
 				2CE20EF1207DEC3800EA1ADF /* VideoToolbox.framework */,
@@ -106,6 +139,18 @@
 				EFDDC38ACBA5FAD245706879 /* libPods-testApp.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2CDBD19220824ACE006B08B3 /* AssetPicker */ = {
+			isa = PBXGroup;
+			children = (
+				2CDBD19420824AE5006B08B3 /* AddAssetController.swift */,
+				2CDBD19520824AE5006B08B3 /* AssetCollectionCell.swift */,
+				2CDBD19320824AE5006B08B3 /* AssetCollectionContentController.swift */,
+				2CDBD19720824AE5006B08B3 /* PHAssetCell.swift */,
+				2CDBD19620824AE5006B08B3 /* AssetPicker.storyboard */,
+			);
+			name = AssetPicker;
 			sourceTree = "<group>";
 		};
 		2CE20EB7207DE50300EA1ADF = {
@@ -129,8 +174,11 @@
 		2CE20EC2207DE50300EA1ADF /* testApp */ = {
 			isa = PBXGroup;
 			children = (
-				2CE20EDB207DEAD700EA1ADF /* HLS_Converter.h */,
-				2CE20EDA207DEAD700EA1ADF /* HLS_Converter.m */,
+				2CDBD19220824ACE006B08B3 /* AssetPicker */,
+				2C0024A7208341AC00D58537 /* FFmpegTranscoder.h */,
+				2C0024A8208341AC00D58537 /* FFmpegTranscoder.m */,
+				2C0024AF20834BD300D58537 /* HLS_Converter.h */,
+				2C0024B020834BD300D58537 /* HLS_Converter.m */,
 				2CE20ED5207DE54D00EA1ADF /* TestController.swift */,
 				2CE20EC3207DE50400EA1ADF /* AppDelegate.swift */,
 				2CE20EF7207DEF3100EA1ADF /* Utils.swift */,
@@ -217,6 +265,7 @@
 				2CE20ED8207DE8F800EA1ADF /* logo.png in Resources */,
 				2CE20ECE207DE50C00EA1ADF /* LaunchScreen.storyboard in Resources */,
 				2CE20ECB207DE50C00EA1ADF /* Assets.xcassets in Resources */,
+				2CDBD19B20824AE5006B08B3 /* AssetPicker.storyboard in Resources */,
 				2CE20EC9207DE50400EA1ADF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,10 +316,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C0024A9208341AC00D58537 /* FFmpegTranscoder.m in Sources */,
+				2C0024B120834BD300D58537 /* HLS_Converter.m in Sources */,
 				2CE20EC4207DE50400EA1ADF /* AppDelegate.swift in Sources */,
-				2CE20EDC207DEAD700EA1ADF /* HLS_Converter.m in Sources */,
+				2CDBD19A20824AE5006B08B3 /* AssetCollectionCell.swift in Sources */,
+				2CDBD19920824AE5006B08B3 /* AddAssetController.swift in Sources */,
+				2CDBD19C20824AE5006B08B3 /* PHAssetCell.swift in Sources */,
 				2CE20ED6207DE54D00EA1ADF /* TestController.swift in Sources */,
 				2CE20EF8207DEF3100EA1ADF /* Utils.swift in Sources */,
+				2CDBD19820824AE5006B08B3 /* AssetCollectionContentController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
