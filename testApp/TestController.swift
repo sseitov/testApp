@@ -33,9 +33,11 @@ extension String {
 class TestController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AddAssetControllerDelegate {
 
     var files:[URL] = []
+    var meta:[AnyHashable:Any]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(mediaDirectory().relativePath)
         refresh()
     }
 
@@ -118,8 +120,6 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         }
     }
     
-    // MARK: - UIImagePickerController delegate
-    
     @IBAction func addMoview(_ sender: Any) {
         AddAssetController.checkPermission({ enabled in
             if enabled {
@@ -136,7 +136,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                 print("You must enable access to Photo Library in cryptoBox settings.")
             }
         })
-/*
+ /*
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
             let imagePickerController = UIImagePickerController()
             imagePickerController.sourceType = .photoLibrary
@@ -149,6 +149,8 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
  */
     }
 /*
+    // MARK: - UIImagePickerController delegate
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let mediaType = info[UIImagePickerControllerMediaType] as! String
         picker.dismiss(animated: true, completion: {
@@ -217,12 +219,21 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         let outURL = mediaDirectory().appendingPathComponent("original.mov")
         print(outURL.relativePath)
         try? FileManager.default.copyItem(at: url, to: outURL)
-        refresh()
+        let tsURL = mediaDirectory().appendingPathComponent("index.m3u8")
+        convertVideo(outURL, to: tsURL, info: nil, result: { info in
+            if info != nil {
+                print("import success")
+            }
+            self.meta = info
+            try? FileManager.default.removeItem(at: tsURL)
+            self.refresh()
+        })
     }
     
     // MARK: - Export
 
     func exportTS(_ meta:[AnyHashable:Any]) {
+
         let tsContent = dirContent(mediaDirectory()).filter( {url in
             return url.pathExtension == "ts"
         })
@@ -246,30 +257,35 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             }
         }
         stream?.close()
+ 
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
         convertVideo(tsFile, to: exportURL, info: meta, result: { info in
             self.refresh()
             if info != nil {
                 print("success")
+                
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
+                }, completionHandler: { completed, error in
+                    DispatchQueue.main.async {
+                        if !completed {
+                            print(error!.localizedDescription)
+                        } else {
+                            print("============ file exported")
+                        }
+                    }
+                })
+
             } else {
                 print("error")
             }
         })
-/*
-*/
     }
-    
+  
     @IBAction func export(_ sender: Any) {
-        let inURL = mediaDirectory().appendingPathComponent("original.mov")
-        let outURL = mediaDirectory().appendingPathComponent("index.m3u8")
-        convertVideo(inURL, to: outURL, info: nil, result: { info in
-            if info != nil {
-                try? FileManager.default.removeItem(at: outURL)
-                self.exportTS(info!)
-            } else {
-                print("error")
-            }
-        })
+        if meta != nil {
+            exportTS(meta!)
+        }
     }
 
     private func convertVideo(_ from:URL, to:URL, info:[AnyHashable : Any]?, result: (([AnyHashable : Any]?) -> Void)!) {
@@ -294,7 +310,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                 let newProgress = Int(Double(progress)/Double(fileSize) * 100.0)
                 if (newProgress >  currentProgress) {
                     currentProgress = newProgress
-                    print(currentProgress)
+//                    print(currentProgress)
                 }
             }
         }, completionBlock: { success in

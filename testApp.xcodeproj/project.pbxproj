@@ -8,12 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		00CB42103C80B989AC699D89 /* libPods-testApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFDDC38ACBA5FAD245706879 /* libPods-testApp.a */; };
-		2C00249C2083284300D58537 /* libx264.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C00249B2083284300D58537 /* libx264.a */; };
-		2C00249E2083285A00D58537 /* libx265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C00249D2083285A00D58537 /* libx265.a */; };
-		2C0024A2208328B000D58537 /* libfdk-aac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0024A1208328B000D58537 /* libfdk-aac.a */; };
 		2C0024A3208328D400D58537 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C00249F2083288B00D58537 /* libc++.tbd */; };
-		2C0024A9208341AC00D58537 /* FFmpegTranscoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C0024A8208341AC00D58537 /* FFmpegTranscoder.m */; };
-		2C0024AE208349FF00D58537 /* libpostproc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C0024AD208349FF00D58537 /* libpostproc.a */; };
 		2C0024B120834BD300D58537 /* HLS_Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C0024B020834BD300D58537 /* HLS_Converter.m */; };
 		2CDBD19820824AE5006B08B3 /* AssetCollectionContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19320824AE5006B08B3 /* AssetCollectionContentController.swift */; };
 		2CDBD19920824AE5006B08B3 /* AddAssetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19420824AE5006B08B3 /* AddAssetController.swift */; };
@@ -44,13 +39,7 @@
 
 /* Begin PBXFileReference section */
 		2A65DC6C18C3190E2562D2F2 /* Pods-testApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-testApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-testApp/Pods-testApp.debug.xcconfig"; sourceTree = "<group>"; };
-		2C00249B2083284300D58537 /* libx264.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx264.a; path = "FFmpeg-iOS/lib/libx264.a"; sourceTree = "<group>"; };
-		2C00249D2083285A00D58537 /* libx265.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx265.a; path = "FFmpeg-iOS/lib/libx265.a"; sourceTree = "<group>"; };
 		2C00249F2083288B00D58537 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		2C0024A1208328B000D58537 /* libfdk-aac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libfdk-aac.a"; path = "FFmpeg-iOS/lib/libfdk-aac.a"; sourceTree = "<group>"; };
-		2C0024A7208341AC00D58537 /* FFmpegTranscoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFmpegTranscoder.h; sourceTree = "<group>"; };
-		2C0024A8208341AC00D58537 /* FFmpegTranscoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFmpegTranscoder.m; sourceTree = "<group>"; };
-		2C0024AD208349FF00D58537 /* libpostproc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpostproc.a; path = "FFmpeg-iOS/lib/libpostproc.a"; sourceTree = "<group>"; };
 		2C0024AF20834BD300D58537 /* HLS_Converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLS_Converter.h; sourceTree = "<group>"; };
 		2C0024B020834BD300D58537 /* HLS_Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLS_Converter.m; sourceTree = "<group>"; };
 		2CDBD19320824AE5006B08B3 /* AssetCollectionContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetCollectionContentController.swift; path = AssetPicker/AssetCollectionContentController.swift; sourceTree = "<group>"; };
@@ -90,10 +79,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C0024AE208349FF00D58537 /* libpostproc.a in Frameworks */,
-				2C0024A2208328B000D58537 /* libfdk-aac.a in Frameworks */,
-				2C00249E2083285A00D58537 /* libx265.a in Frameworks */,
-				2C00249C2083284300D58537 /* libx264.a in Frameworks */,
 				2CE20EEA207DEBFD00EA1ADF /* libavformat.a in Frameworks */,
 				2CE20EEB207DEBFD00EA1ADF /* libavcodec.a in Frameworks */,
 				2CE20EEC207DEBFD00EA1ADF /* libavfilter.a in Frameworks */,
@@ -118,11 +103,7 @@
 		0F3298B0E2BA95F3EA4C6268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2C0024AD208349FF00D58537 /* libpostproc.a */,
-				2C0024A1208328B000D58537 /* libfdk-aac.a */,
 				2C00249F2083288B00D58537 /* libc++.tbd */,
-				2C00249D2083285A00D58537 /* libx265.a */,
-				2C00249B2083284300D58537 /* libx264.a */,
 				2CE20EF5207DEC4B00EA1ADF /* AVFoundation.framework */,
 				2CE20EF3207DEC4300EA1ADF /* CoreMedia.framework */,
 				2CE20EF1207DEC3800EA1ADF /* VideoToolbox.framework */,
@@ -175,8 +156,6 @@
 			isa = PBXGroup;
 			children = (
 				2CDBD19220824ACE006B08B3 /* AssetPicker */,
-				2C0024A7208341AC00D58537 /* FFmpegTranscoder.h */,
-				2C0024A8208341AC00D58537 /* FFmpegTranscoder.m */,
 				2C0024AF20834BD300D58537 /* HLS_Converter.h */,
 				2C0024B020834BD300D58537 /* HLS_Converter.m */,
 				2CE20ED5207DE54D00EA1ADF /* TestController.swift */,
@@ -316,7 +295,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C0024A9208341AC00D58537 /* FFmpegTranscoder.m in Sources */,
 				2C0024B120834BD300D58537 /* HLS_Converter.m in Sources */,
 				2CE20EC4207DE50400EA1ADF /* AppDelegate.swift in Sources */,
 				2CDBD19A20824AE5006B08B3 /* AssetCollectionCell.swift in Sources */,

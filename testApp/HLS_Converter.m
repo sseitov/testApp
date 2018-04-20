@@ -16,7 +16,6 @@
 #include <libavutil/opt.h>
 #include <libavutil/pixdesc.h>
 
-
 @interface HLS_Converter () {
     dispatch_queue_t hlsQueue;
     dispatch_queue_t callbackQueue;
@@ -209,6 +208,7 @@
         if (in_ctx->codec_type == AVMEDIA_TYPE_VIDEO || in_ctx->codec_type == AVMEDIA_TYPE_AUDIO) {
             const char *codec_name = avcodec_get_name(in_ctx->codec_id);
             AVCodec *encoder = avcodec_find_encoder(in_ctx->codec_id);
+            
             if (!encoder) {
                 av_log(NULL, AV_LOG_FATAL, "Necessary encoder %s not found\n", codec_name);
             }
@@ -220,15 +220,20 @@
             }
             AVCodecContext *out_ctx = out_stream->codec;
             
+            out_ctx->codec_id = in_ctx->codec_id;
+            out_ctx->codec_type = in_ctx->codec_type;
+            out_stream->time_base = out_ctx->time_base = (AVRational){1, out_ctx->sample_rate};
+
             if (in_ctx->codec_type == AVMEDIA_TYPE_VIDEO) {
-                out_ctx->codec_id = in_ctx->codec_id;
-                out_ctx->codec_type = in_ctx->codec_type;
-                
                 out_ctx->height = in_ctx->height;
                 out_ctx->width = in_ctx->width;
                 out_ctx->sample_aspect_ratio = in_ctx->sample_aspect_ratio;
                 out_ctx->pix_fmt = in_ctx->pix_fmt;
-                
+
+                if (in_ctx->codec_id == AV_CODEC_ID_HEVC) {
+                    out_ctx->codec_tag = MKTAG('h','v','c','1');
+                }
+
                 out_stream->time_base = out_ctx->time_base = (AVRational){1, 30};
                 
                 const size_t extra_size_alloc = (in_ctx->extradata_size > 0) ? (in_ctx->extradata_size + FF_INPUT_BUFFER_PADDING_SIZE) : 0;
@@ -263,7 +268,6 @@
                 out_ctx->channel_layout = in_ctx->channel_layout;
                 out_ctx->channels = av_get_channel_layout_nb_channels(out_ctx->channel_layout);
                 out_ctx->sample_fmt = in_ctx->sample_fmt;
-                out_stream->time_base = out_ctx->time_base = (AVRational){1, out_ctx->sample_rate};
             }
             ret = avcodec_open2(out_ctx, encoder, NULL);
             if (ret < 0) {
