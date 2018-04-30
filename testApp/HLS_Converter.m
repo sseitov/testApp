@@ -229,7 +229,8 @@
                 out_ctx->width = in_ctx->width;
                 out_ctx->sample_aspect_ratio = in_ctx->sample_aspect_ratio;
                 out_ctx->pix_fmt = in_ctx->pix_fmt;
-
+                out_ctx->profile = in_ctx->profile;
+                
                 if (in_ctx->codec_id == AV_CODEC_ID_HEVC) {
                     out_ctx->codec_tag = MKTAG('h','v','c','1');
                 }

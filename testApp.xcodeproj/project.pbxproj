@@ -10,6 +10,7 @@
 		00CB42103C80B989AC699D89 /* libPods-testApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFDDC38ACBA5FAD245706879 /* libPods-testApp.a */; };
 		2C0024A3208328D400D58537 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C00249F2083288B00D58537 /* libc++.tbd */; };
 		2C0024B120834BD300D58537 /* HLS_Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C0024B020834BD300D58537 /* HLS_Converter.m */; };
+		2C611F3E209721F00036CD9E /* libx265.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C611F3D209721F00036CD9E /* libx265.a */; };
 		2CDBD19820824AE5006B08B3 /* AssetCollectionContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19320824AE5006B08B3 /* AssetCollectionContentController.swift */; };
 		2CDBD19920824AE5006B08B3 /* AddAssetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19420824AE5006B08B3 /* AddAssetController.swift */; };
 		2CDBD19A20824AE5006B08B3 /* AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19520824AE5006B08B3 /* AssetCollectionCell.swift */; };
@@ -42,6 +43,7 @@
 		2C00249F2083288B00D58537 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		2C0024AF20834BD300D58537 /* HLS_Converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLS_Converter.h; sourceTree = "<group>"; };
 		2C0024B020834BD300D58537 /* HLS_Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLS_Converter.m; sourceTree = "<group>"; };
+		2C611F3D209721F00036CD9E /* libx265.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libx265.a; path = "FFmpeg-iOS/lib/libx265.a"; sourceTree = "<group>"; };
 		2CDBD19320824AE5006B08B3 /* AssetCollectionContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetCollectionContentController.swift; path = AssetPicker/AssetCollectionContentController.swift; sourceTree = "<group>"; };
 		2CDBD19420824AE5006B08B3 /* AddAssetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddAssetController.swift; path = AssetPicker/AddAssetController.swift; sourceTree = "<group>"; };
 		2CDBD19520824AE5006B08B3 /* AssetCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetCollectionCell.swift; path = AssetPicker/AssetCollectionCell.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C611F3E209721F00036CD9E /* libx265.a in Frameworks */,
 				2CE20EEA207DEBFD00EA1ADF /* libavformat.a in Frameworks */,
 				2CE20EEB207DEBFD00EA1ADF /* libavcodec.a in Frameworks */,
 				2CE20EEC207DEBFD00EA1ADF /* libavfilter.a in Frameworks */,
@@ -103,6 +106,7 @@
 		0F3298B0E2BA95F3EA4C6268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2C611F3D209721F00036CD9E /* libx265.a */,
 				2C00249F2083288B00D58537 /* libc++.tbd */,
 				2CE20EF5207DEC4B00EA1ADF /* AVFoundation.framework */,
 				2CE20EF3207DEC4300EA1ADF /* CoreMedia.framework */,

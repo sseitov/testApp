@@ -33,7 +33,6 @@ extension String {
 class TestController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AddAssetControllerDelegate {
 
     var files:[URL] = []
-    var meta:[AnyHashable:Any]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -221,12 +220,11 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         try? FileManager.default.copyItem(at: url, to: outURL)
         let tsURL = mediaDirectory().appendingPathComponent("index.m3u8")
         convertVideo(outURL, to: tsURL, info: nil, result: { info in
+            try? FileManager.default.removeItem(at: tsURL)
             if info != nil {
                 print("import success")
+                self.exportTS(info!)
             }
-            self.meta = info
-            try? FileManager.default.removeItem(at: tsURL)
-            self.refresh()
         })
     }
     
@@ -260,32 +258,54 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
  
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
         convertVideo(tsFile, to: exportURL, info: meta, result: { info in
+            try? FileManager.default.removeItem(at: tsFile)
             self.refresh()
             if info != nil {
                 print("success")
-                
-                PHPhotoLibrary.shared().performChanges({
-                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
-                }, completionHandler: { completed, error in
-                    DispatchQueue.main.async {
-                        if !completed {
-                            print(error!.localizedDescription)
-                        } else {
-                            print("============ file exported")
-                        }
-                    }
-                })
-
             } else {
                 print("error")
             }
         })
     }
-  
-    @IBAction func export(_ sender: Any) {
-        if meta != nil {
-            exportTS(meta!)
+/*
+    func exportHevc() {
+        let exportURL = mediaDirectory().appendingPathComponent("export.mov")
+        let urlAsset = AVURLAsset(url: exportURL)
+        let presets = AVAssetExportSession.exportPresets(compatibleWith: urlAsset)
+        if presets.contains(AVAssetExportPresetHEVCHighestQuality) {
+            let session = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetHEVCHighestQuality)
+            let hevcURL = mediaDirectory().appendingPathComponent("hevc.mov")
+            session?.outputURL = hevcURL
+            session?.outputFileType = AVFileType.mp4
+            session?.exportAsynchronously(completionHandler: {
+                DispatchQueue.main.async {
+                    self.refresh()
+                    switch session!.status {
+                    case .completed:
+                        print("Success")
+                    default:
+                        print("failed")
+                    }
+                }
+            })
         }
+    }
+ */
+    @IBAction func export(_ sender: Any) {
+
+        let exportURL = mediaDirectory().appendingPathComponent("export.mov")
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
+        }, completionHandler: { completed, error in
+            DispatchQueue.main.async {
+                if !completed {
+                    print(error!.localizedDescription)
+                } else {
+                    print("============ file exported")
+                }
+            }
+        })
+
     }
 
     private func convertVideo(_ from:URL, to:URL, info:[AnyHashable : Any]?, result: (([AnyHashable : Any]?) -> Void)!) {
