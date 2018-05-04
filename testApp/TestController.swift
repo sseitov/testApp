@@ -33,6 +33,7 @@ extension String {
 class TestController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, AddAssetControllerDelegate {
 
     var files:[URL] = []
+    var meta:[AnyHashable:Any]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -222,8 +223,10 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         convertVideo(outURL, to: tsURL, info: nil, result: { info in
             try? FileManager.default.removeItem(at: tsURL)
             if info != nil {
+                self.meta = info
                 print("import success")
                 self.exportTS(info!)
+                self.refresh()
             }
         })
     }
@@ -255,10 +258,17 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             }
         }
         stream?.close()
- 
+    }
+    
+    @IBAction func export(_ sender: Any) {
+//        let url = URL(string: "https://bitmovin-a.akamaihd.net/content/dataset/multi-codec/hevc/stream_fmp4.m3u8")
+//        let url = URL(string: "http://127.0.0.1:8080/index.m3u8")
+//        performSegue(withIdentifier: "showMovie", sender: url)
+
+        let tsFile = mediaDirectory().appendingPathComponent("output.ts")
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
-        convertVideo(tsFile, to: exportURL, info: meta, result: { info in
-            try? FileManager.default.removeItem(at: tsFile)
+        convertVideo(tsFile, to: exportURL, info: meta!, result: { info in
+//            try? FileManager.default.removeItem(at: tsFile)
             self.refresh()
             if info != nil {
                 print("success")
@@ -266,33 +276,8 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                 print("error")
             }
         })
-    }
-/*
-    func exportHevc() {
-        let exportURL = mediaDirectory().appendingPathComponent("export.mov")
-        let urlAsset = AVURLAsset(url: exportURL)
-        let presets = AVAssetExportSession.exportPresets(compatibleWith: urlAsset)
-        if presets.contains(AVAssetExportPresetHEVCHighestQuality) {
-            let session = AVAssetExportSession(asset: urlAsset, presetName: AVAssetExportPresetHEVCHighestQuality)
-            let hevcURL = mediaDirectory().appendingPathComponent("hevc.mov")
-            session?.outputURL = hevcURL
-            session?.outputFileType = AVFileType.mp4
-            session?.exportAsynchronously(completionHandler: {
-                DispatchQueue.main.async {
-                    self.refresh()
-                    switch session!.status {
-                    case .completed:
-                        print("Success")
-                    default:
-                        print("failed")
-                    }
-                }
-            })
-        }
-    }
- */
-    @IBAction func export(_ sender: Any) {
 
+/*
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
         PHPhotoLibrary.shared().performChanges({
             PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
@@ -305,7 +290,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                 }
             }
         })
-
+*/
     }
 
     private func convertVideo(_ from:URL, to:URL, info:[AnyHashable : Any]?, result: (([AnyHashable : Any]?) -> Void)!) {
@@ -313,12 +298,12 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
 
         var meta:[AnyHashable : Any]?
         if (info == nil) {
-            meta = converter.open(from.relativePath)
+            meta = converter.openMovie(from.relativePath)
             if meta == nil {
                 result(nil)
                 return
             }
-        } else if !converter.open(withInfo: from.relativePath) {
+        } else if !converter.openStream(from.relativePath) {
             result(nil)
             return
         }

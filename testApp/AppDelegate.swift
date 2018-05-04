@@ -12,10 +12,30 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let webServer = GCDWebServer()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         try? FileManager.default.createDirectory(at: mediaDirectory(), withIntermediateDirectories: false, attributes: nil)
+        
+        webServer.addDefaultHandler(forMethod: "GET", request: GCDWebServerRequest.self, processBlock: { request in
+            print("======== request \(request.path)")
+            let fullPath = "\(mediaDirectory().relativePath)\(request.path)"
+            print("======== fullPath \(fullPath)")
+            if let data = try? Data(contentsOf: URL(fileURLWithPath: fullPath)) {
+                return GCDWebServerDataResponse(data: data, contentType: "")
+            } else {
+                return GCDWebServerErrorResponse(statusCode: 400)
+            }
+        })
+        
+        do {
+            let options = [GCDWebServerOption_AutomaticallySuspendInBackground:false, GCDWebServerOption_Port:8080, GCDWebServerOption_BonjourName:UIDevice.current.name] as [String : Any]
+            try webServer.start(options: options as [AnyHashable: Any])
+        } catch {
+            print(error)
+        }
+        
         return true
     }
 

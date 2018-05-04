@@ -13,8 +13,8 @@ typedef void(^HLS_CompletionBlock)(BOOL success);
 
 @interface HLS_Converter : NSObject
 
-- (NSDictionary*)open:(NSString*)inPath;
-- (BOOL)openWithInfo:(NSString*)inPath;
+- (NSDictionary*)openMovie:(NSString*)inPath;
+- (BOOL)openStream:(NSString*)inPath;
 - (void)close;
 
 - (void)convertTo:(NSString*)outPath
