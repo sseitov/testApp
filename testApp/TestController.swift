@@ -272,6 +272,17 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             self.refresh()
             if info != nil {
                 print("success")
+                PHPhotoLibrary.shared().performChanges({
+                    PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
+                }, completionHandler: { completed, error in
+                    DispatchQueue.main.async {
+                        if !completed {
+                            print(error!.localizedDescription)
+                        } else {
+                            print("============ file exported")
+                        }
+                    }
+                })
             } else {
                 print("error")
             }
@@ -279,17 +290,6 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
 
 /*
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
-        PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
-        }, completionHandler: { completed, error in
-            DispatchQueue.main.async {
-                if !completed {
-                    print(error!.localizedDescription)
-                } else {
-                    print("============ file exported")
-                }
-            }
-        })
 */
     }
 
