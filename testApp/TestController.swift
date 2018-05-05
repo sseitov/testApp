@@ -225,15 +225,15 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             if info != nil {
                 self.meta = info
                 print("import success")
-                self.exportTS(info!)
-                self.refresh()
+                self.exportTS()
             }
+            self.refresh()
         })
     }
     
     // MARK: - Export
 
-    func exportTS(_ meta:[AnyHashable:Any]) {
+    func exportTS() {
 
         let tsContent = dirContent(mediaDirectory()).filter( {url in
             return url.pathExtension == "ts"
@@ -266,12 +266,15 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
 //        performSegue(withIdentifier: "showMovie", sender: url)
 
         let tsFile = mediaDirectory().appendingPathComponent("output.ts")
+//        let tsFile = mediaDirectory().appendingPathComponent("index.m3u8")
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
         convertVideo(tsFile, to: exportURL, info: meta!, result: { info in
-//            try? FileManager.default.removeItem(at: tsFile)
+            try? FileManager.default.removeItem(at: tsFile)
             self.refresh()
             if info != nil {
                 print("success")
+                self.refresh()
+
                 PHPhotoLibrary.shared().performChanges({
                     PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
                 }, completionHandler: { completed, error in
@@ -283,19 +286,16 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                         }
                     }
                 })
+ 
             } else {
                 print("error")
             }
         })
-
-/*
-        let exportURL = mediaDirectory().appendingPathComponent("export.mov")
-*/
     }
 
     private func convertVideo(_ from:URL, to:URL, info:[AnyHashable : Any]?, result: (([AnyHashable : Any]?) -> Void)!) {
         let converter = HLS_Converter()
-
+        
         var meta:[AnyHashable : Any]?
         if (info == nil) {
             meta = converter.openMovie(from.relativePath)
@@ -315,7 +315,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                 let newProgress = Int(Double(progress)/Double(fileSize) * 100.0)
                 if (newProgress >  currentProgress) {
                     currentProgress = newProgress
-//                    print(currentProgress)
+                    //                    print(currentProgress)
                 }
             }
         }, completionBlock: { success in
