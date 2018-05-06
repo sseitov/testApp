@@ -11,7 +11,6 @@
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/opt.h>
-#include <libavutil/pixdesc.h>
 
 @interface HLS_Converter () {
     dispatch_queue_t hlsQueue;
@@ -29,9 +28,6 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        av_register_all();
-        avcodec_register_all();
-        
         hlsQueue = dispatch_queue_create("ffmpeg_hls_queue", NULL);
         ifmt_ctx = NULL;
         ofmt_ctx = NULL;
@@ -64,7 +60,8 @@
 }
 
 - (NSDictionary*)openMovie:(NSString*)inPath {
-    if ([self open_input_file:inPath.UTF8String] == 0) {
+    
+    if ([self open_input_file:inPath.UTF8String]) {
         // Copy file metadata
         NSMutableDictionary *fileMeta = [NSMutableDictionary dictionary];
         AVDictionaryEntry *tag = NULL;
@@ -94,27 +91,23 @@
     }
 }
 
-- (BOOL)openStream:(NSString*)inPath {
-    return ([self open_input_file:inPath.UTF8String] == 0);
+- (bool)openStream:(NSString*)inPath {
+    return [self open_input_file:inPath.UTF8String];
 }
 
-- (int)open_input_file:(const char *)filename {
-    
-    int ret;
-    unsigned int i;
+- (bool)open_input_file:(const char *)filename {
 
-    ifmt_ctx = NULL;
-    if ((ret = avformat_open_input(&ifmt_ctx, filename, NULL, NULL)) < 0) {
+    if (avformat_open_input(&ifmt_ctx, filename, NULL, NULL) < 0) {
         av_log(NULL, AV_LOG_ERROR, "Cannot open input file\n");
-        return ret;
+        return false;
     }
 
-    if ((ret = avformat_find_stream_info(ifmt_ctx, NULL)) < 0) {
+    if (avformat_find_stream_info(ifmt_ctx, NULL) < 0) {
         av_log(NULL, AV_LOG_ERROR, "Cannot find stream information\n");
-        return ret;
+        return false;
     }
     
-    for (i = 0; i < ifmt_ctx->nb_streams; i++) {
+    for (int i = 0; i < ifmt_ctx->nb_streams; i++) {
         AVStream *stream = ifmt_ctx->streams[i];
         if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
             videoIndex = i;
@@ -125,15 +118,15 @@
     
 //    av_dump_format(ifmt_ctx, 0, filename, 0);
     
-    return 0;
+    return true;
 }
 
-- (BOOL)create_output_file:(const char*)filename info:(NSDictionary*)info {
+- (bool)create_output_file:(const char*)filename info:(NSDictionary*)info {
     
     int ret = avformat_alloc_output_context2(&ofmt_ctx, NULL, NULL, filename);
     if (ret < 0) {
         av_log(NULL, AV_LOG_ERROR, "Cannot find output format\n");
-        return NO;
+        return false;
     }
 
     if (info) {
@@ -154,7 +147,7 @@
             AVStream *out_stream = avformat_new_stream(ofmt_ctx, encoder);
             if (!out_stream) {
                 av_log(NULL, AV_LOG_ERROR, "Failed allocating output stream\n");
-                return NO;
+                return false;
             }
             AVCodecContext *out_ctx = out_stream->codec;
             
@@ -213,7 +206,7 @@
             }
         } else if (in_ctx->codec_type == AVMEDIA_TYPE_UNKNOWN) {
             av_log(NULL, AV_LOG_FATAL, "Elementary stream #%d is of unknown type, cannot proceed\n", i);
-            return NO;
+            return false;
         } else {
             continue;
         }
@@ -229,20 +222,23 @@
         ret = avio_open(&ofmt_ctx->pb, filename, AVIO_FLAG_WRITE);
         if (ret < 0) {
             av_log(NULL, AV_LOG_ERROR, "Could not open output file '%s'", filename);
-            return NO;
+            return false;
         }
     }
     
     ret = avformat_write_header(ofmt_ctx, NULL);
     if (ret < 0) {
         av_log(NULL, AV_LOG_ERROR, "Error occurred when opening output file\n");
-        return NO;
+        return false;
     } else {
-        return YES;
+        return true;
     }
 }
 
-- (void)convertTo:(NSString*)outPath info:(NSDictionary*)info progressBlock:(HLS_ProgressBlock)progressBlock completionBlock:(HLS_CompletionBlock)completionBlock {
+- (void)convertTo:(NSString*)outPath
+             info:(NSDictionary*)info
+    progressBlock:(HLS_ProgressBlock)progressBlock
+  completionBlock:(HLS_CompletionBlock)completionBlock {
     
     dispatch_async(hlsQueue, ^{
         int ret = -1;
