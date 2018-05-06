@@ -41,16 +41,10 @@
 
 - (void)close {
     if (ifmt_ctx) {
-        for (int i = 0; i < ifmt_ctx->nb_streams; i++) {
-            avcodec_close(ifmt_ctx->streams[i]->codec);
-        }
         avformat_close_input(&ifmt_ctx);
         ifmt_ctx = 0;
     }
     if (ofmt_ctx) {
-        for (int i = 0; i < ofmt_ctx->nb_streams; i++) {
-            avcodec_close(ofmt_ctx->streams[i]->codec);
-        }
         if (ofmt_ctx->oformat && !(ofmt_ctx->oformat->flags & AVFMT_NOFILE)) {
             avio_closep(&ofmt_ctx->pb);
         }
@@ -138,11 +132,10 @@
     }
 
     for (int i = 0; i < ifmt_ctx->nb_streams; i++) {
-        
-        AVStream *in_stream = ifmt_ctx->streams[i];
-        AVCodecContext *in_ctx = in_stream->codec;
-        
-        if (in_ctx->codec_type == AVMEDIA_TYPE_VIDEO || in_ctx->codec_type == AVMEDIA_TYPE_AUDIO) {
+        if (i == videoIndex || i == audioIndex) {
+            AVStream *in_stream = ifmt_ctx->streams[i];
+            AVCodecContext *in_ctx = in_stream->codec;
+            
             AVCodec *encoder = avcodec_find_encoder(in_ctx->codec_id);
             AVStream *out_stream = avformat_new_stream(ofmt_ctx, encoder);
             if (!out_stream) {
@@ -193,7 +186,11 @@
                         memcpy(side_data->data, matrix.bytes, side_data->size);
                     }
                 }
-                
+                ret = avcodec_parameters_from_context(out_stream->codecpar, out_ctx);
+                if (ret < 0) {
+                    av_log(NULL, AV_LOG_ERROR, "Error copy parameters from context\n");
+                    return false;
+                }
             } else {
                 out_ctx->sample_rate = in_ctx->sample_rate;
                 out_ctx->channel_layout = in_ctx->channel_layout;
@@ -204,9 +201,6 @@
             if (ret < 0) {
                 av_log(NULL, AV_LOG_ERROR, "Cannot open encoder for stream #%u\n", i);
             }
-        } else if (in_ctx->codec_type == AVMEDIA_TYPE_UNKNOWN) {
-            av_log(NULL, AV_LOG_FATAL, "Elementary stream #%d is of unknown type, cannot proceed\n", i);
-            return false;
         } else {
             continue;
         }
