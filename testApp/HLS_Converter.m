@@ -8,7 +8,6 @@
 
 #import "HLS_Converter.h"
 
-#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/opt.h>
 
@@ -60,7 +59,6 @@
         NSMutableDictionary *fileMeta = [NSMutableDictionary dictionary];
         AVDictionaryEntry *tag = NULL;
         while ((tag = av_dict_get(ifmt_ctx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
-            NSLog(@"%s - %s\n", tag->value, tag->key);
             [fileMeta setObject:[NSString stringWithFormat:@"%s", tag->value] forKey:[NSString stringWithFormat:@"%s", tag->key]];
         }
         
@@ -69,7 +67,6 @@
         // Copy video metadata
         NSMutableDictionary *videoMeta = [NSMutableDictionary dictionary];
         while ((tag = av_dict_get(stream->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
-            NSLog(@"%s - %s\n", tag->value, tag->key);
             [videoMeta setObject:[NSString stringWithFormat:@"%s",tag->value] forKey:[NSString stringWithFormat:@"%s",tag->key]];
         }
         
@@ -146,7 +143,6 @@
             
             out_ctx->codec_id = in_ctx->codec_id;
             out_ctx->codec_type = in_ctx->codec_type;
-            out_stream->time_base = out_ctx->time_base = (AVRational){1, out_ctx->sample_rate};
 
             if (in_ctx->codec_type == AVMEDIA_TYPE_VIDEO) {
                 out_ctx->height = in_ctx->height;
@@ -159,14 +155,6 @@
                 }
 
                 out_stream->time_base = out_ctx->time_base = (AVRational){1, 30};
-                
-                const size_t extra_size_alloc = (in_ctx->extradata_size > 0) ? (in_ctx->extradata_size + AV_INPUT_BUFFER_PADDING_SIZE) : 0;
-                if (extra_size_alloc)
-                {
-                    out_ctx->extradata = (uint8_t*)av_mallocz(extra_size_alloc);
-                    memcpy( out_ctx->extradata, in_ctx->extradata, in_ctx->extradata_size);
-                }
-                out_ctx->extradata_size = in_ctx->extradata_size;
                 
                 if (info) {
                     NSDictionary * videoMeta = [info objectForKey:@"videoMeta"];
@@ -186,16 +174,26 @@
                         memcpy(side_data->data, matrix.bytes, side_data->size);
                     }
                 }
-                ret = avcodec_parameters_from_context(out_stream->codecpar, out_ctx);
-                if (ret < 0) {
-                    av_log(NULL, AV_LOG_ERROR, "Error copy parameters from context\n");
-                    return false;
-                }
             } else {
                 out_ctx->sample_rate = in_ctx->sample_rate;
                 out_ctx->channel_layout = in_ctx->channel_layout;
                 out_ctx->channels = av_get_channel_layout_nb_channels(out_ctx->channel_layout);
                 out_ctx->sample_fmt = in_ctx->sample_fmt;
+                out_stream->time_base = out_ctx->time_base = (AVRational){1, out_ctx->sample_rate};
+            }
+
+            const size_t extra_size_alloc = (in_ctx->extradata_size > 0) ? (in_ctx->extradata_size + AV_INPUT_BUFFER_PADDING_SIZE) : 0;
+            if (extra_size_alloc)
+            {
+                out_ctx->extradata = (uint8_t*)av_mallocz(extra_size_alloc);
+                memcpy( out_ctx->extradata, in_ctx->extradata, in_ctx->extradata_size);
+            }
+            out_ctx->extradata_size = in_ctx->extradata_size;
+            
+            ret = avcodec_parameters_from_context(out_stream->codecpar, out_ctx);
+            if (ret < 0) {
+                av_log(NULL, AV_LOG_ERROR, "Error copy parameters from context\n");
+                return false;
             }
             ret = avcodec_open2(out_ctx, encoder, NULL);
             if (ret < 0) {
