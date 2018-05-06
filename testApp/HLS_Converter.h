@@ -15,13 +15,10 @@ typedef void(^HLS_CompletionBlock)(BOOL success);
 
 - (NSDictionary*)openMovie:(NSString*)inPath;
 - (BOOL)openStream:(NSString*)inPath;
-- (void)close;
 
 - (void)convertTo:(NSString*)outPath
              info:(NSDictionary*)info
     progressBlock:(HLS_ProgressBlock)progressBlock
   completionBlock:(HLS_CompletionBlock)completionBlock;
-
-@property (atomic) BOOL cancelOperation;
 
 @end

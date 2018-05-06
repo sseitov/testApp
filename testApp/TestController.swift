@@ -274,7 +274,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             if info != nil {
                 print("success")
                 self.refresh()
-
+/*
                 PHPhotoLibrary.shared().performChanges({
                     PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
                 }, completionHandler: { completed, error in
@@ -286,11 +286,12 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                         }
                     }
                 })
- 
+ */
             } else {
                 print("error")
             }
         })
+ 
     }
 
     private func convertVideo(_ from:URL, to:URL, info:[AnyHashable : Any]?, result: (([AnyHashable : Any]?) -> Void)!) {

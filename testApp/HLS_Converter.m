@@ -10,14 +10,11 @@
 
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
-#include <libavfilter/buffersink.h>
-#include <libavfilter/buffersrc.h>
 #include <libavutil/opt.h>
 #include <libavutil/pixdesc.h>
 
 @interface HLS_Converter () {
     dispatch_queue_t hlsQueue;
-    dispatch_queue_t callbackQueue;
     
     AVFormatContext *ifmt_ctx;
     AVFormatContext *ofmt_ctx;
@@ -34,7 +31,6 @@
     if (self) {
         av_register_all();
         avcodec_register_all();
-        avformat_network_init();
         
         hlsQueue = dispatch_queue_create("ffmpeg_hls_queue", NULL);
         ifmt_ctx = NULL;
@@ -65,45 +61,6 @@
         avformat_close_input(&ofmt_ctx);
         ofmt_ctx = 0;
     }
-}
-
-- (int)applyBitstreamFilter:(AVBitStreamFilterContext*)bitstreamFilterContext packet:(AVPacket*)packet outputCodecContext:(AVCodecContext*)outputCodecContext {
-    
-    AVPacket newPacket = *packet;
-    int a = av_bitstream_filter_filter(bitstreamFilterContext, outputCodecContext, NULL,
-                                       &newPacket.data, &newPacket.size,
-                                       packet->data, packet->size,
-                                       packet->flags & AV_PKT_FLAG_KEY);
-    
-    if(a == 0 && newPacket.data != packet->data) {
-        uint8_t *t = av_malloc(newPacket.size + AV_INPUT_BUFFER_PADDING_SIZE);
-        if(t) {
-            memcpy(t, newPacket.data, newPacket.size);
-            memset(t + newPacket.size, 0, AV_INPUT_BUFFER_PADDING_SIZE);
-            newPacket.data = t;
-            newPacket.buf = NULL;
-            newPacket.size = newPacket.size + AV_INPUT_BUFFER_PADDING_SIZE;
-            a = 1;
-        } else {
-            a = AVERROR(ENOMEM);
-        }
-    }
-    
-    if (a > 0) {
-        av_packet_unref(packet);
-        newPacket.buf = av_buffer_create(newPacket.data, newPacket.size,
-                                         av_buffer_default_free, NULL, 0);
-        if (!newPacket.buf) {
-            NSLog(@"new packet buffer couldnt be allocated");
-        }
-        
-    } else if (a < 0) {
-        NSLog(@"FFmpeg Error: Failed to open bitstream filter %s for stream %d with codec %s", bitstreamFilterContext->filter->name, packet->stream_index,
-              outputCodecContext->codec ? outputCodecContext->codec->name : "copy");
-    }
-    
-    *packet = newPacket;
-    return a;
 }
 
 - (NSDictionary*)openMovie:(NSString*)inPath {
@@ -158,23 +115,11 @@
     }
     
     for (i = 0; i < ifmt_ctx->nb_streams; i++) {
-        AVStream *stream;
-        AVCodecContext *codec_ctx;
-        stream = ifmt_ctx->streams[i];
-        codec_ctx = stream->codec;
-        if (codec_ctx->codec_type == AVMEDIA_TYPE_VIDEO || codec_ctx->codec_type == AVMEDIA_TYPE_AUDIO) {
-            // Open decoder
-            AVCodec *codec = avcodec_find_decoder(codec_ctx->codec_id);
-            ret = avcodec_open2(codec_ctx, codec, NULL);
-            if (ret < 0) {
-                av_log(NULL, AV_LOG_ERROR, "Failed to open decoder for stream #%u\n", i);
-                return ret;
-            }
-            if (codec_ctx->codec_type == AVMEDIA_TYPE_VIDEO) {
-                videoIndex = i;
-            } else {
-                audioIndex = i;
-            }
+        AVStream *stream = ifmt_ctx->streams[i];
+        if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+            videoIndex = i;
+        } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+            audioIndex = i;
         }
     }
     
@@ -205,13 +150,7 @@
         AVCodecContext *in_ctx = in_stream->codec;
         
         if (in_ctx->codec_type == AVMEDIA_TYPE_VIDEO || in_ctx->codec_type == AVMEDIA_TYPE_AUDIO) {
-            const char *codec_name = avcodec_get_name(in_ctx->codec_id);
             AVCodec *encoder = avcodec_find_encoder(in_ctx->codec_id);
-            
-            if (!encoder) {
-                av_log(NULL, AV_LOG_FATAL, "Necessary encoder %s not found\n", codec_name);
-            }
-            
             AVStream *out_stream = avformat_new_stream(ofmt_ctx, encoder);
             if (!out_stream) {
                 av_log(NULL, AV_LOG_ERROR, "Failed allocating output stream\n");
@@ -306,64 +245,38 @@
 - (void)convertTo:(NSString*)outPath info:(NSDictionary*)info progressBlock:(HLS_ProgressBlock)progressBlock completionBlock:(HLS_CompletionBlock)completionBlock {
     
     dispatch_async(hlsQueue, ^{
-        unsigned int stream_index;
-        AVBitStreamFilterContext *filter = 0;
         int ret = -1;
-        
+        int totalBytesRead = 0;
+
         if (![self create_output_file:outPath.UTF8String info:info]) {
             goto end;
         }
-        
-        if (info == NULL) {
-            if (self->ifmt_ctx->streams[self->videoIndex]->codec->codec_id == AV_CODEC_ID_HEVC) {
-                filter = av_bitstream_filter_init("hevc_mp4toannexb");
-            } else {
-                filter = av_bitstream_filter_init("h264_mp4toannexb");
-            }
-        }
 
         // read all packets
-        self.cancelOperation = NO;
-        int totalBytesRead = 0;
         AVPacket packet = { .data = NULL, .size = 0 };
         while (1) {
             ret = av_read_frame(self->ifmt_ctx, &packet);
-            if (ret < 0 || self.cancelOperation) {
-                if (self.cancelOperation) {
-                    ret = -1;
-                } else {
-                    ret = 0;
-                }
+            if (ret < 0) {
+                ret = 0; // finish stream
                 break;
             } else {
                 totalBytesRead += packet.size;
             }
             
-            stream_index = packet.stream_index;
-            if (stream_index != self->audioIndex && stream_index != self->videoIndex) {
+            if (packet.stream_index != self->audioIndex && packet.stream_index != self->videoIndex) {
                 av_packet_unref(&packet);
                 continue;
             }
             
             // remux this frame without reencoding
             av_packet_rescale_ts(&packet,
-                                 self->ifmt_ctx->streams[stream_index]->time_base,
-                                 self->ofmt_ctx->streams[stream_index]->time_base);
-            
-            if (info == NULL) {
-                if (stream_index == self->videoIndex) {
-                    ret = [self applyBitstreamFilter:filter packet:&packet outputCodecContext:self->ofmt_ctx->streams[stream_index]->codec];
-                }
-            }
-            if (ret < 0) {
-                av_packet_unref(&packet);
-                goto end;
-            }
+                                 self->ifmt_ctx->streams[packet.stream_index]->time_base,
+                                 self->ofmt_ctx->streams[packet.stream_index]->time_base);
             
             ret = av_interleaved_write_frame(self->ofmt_ctx, &packet);
             if (ret < 0) {
                 av_packet_unref(&packet);
-                goto end;
+                break;
             }
             
             if (progressBlock) {
@@ -378,23 +291,6 @@
         av_write_trailer(self->ofmt_ctx);
         
     end:
-        if (filter) {
-            av_bitstream_filter_close(filter);
-        }
-        
-        if (self->ofmt_ctx) {
-            for (int i = 0; i < self->ofmt_ctx->nb_streams; i++) {
-                avcodec_close(self->ofmt_ctx->streams[i]->codec);
-            }
-            if (!(self->ofmt_ctx->oformat->flags & AVFMT_NOFILE)) {
-                avio_closep(&self->ofmt_ctx->pb);
-                if (ret < 0) {
-                    av_log(NULL, AV_LOG_ERROR, "Could not close output file");
-                }
-            }
-            avformat_free_context(self->ofmt_ctx);
-            self->ofmt_ctx = 0;
-        }
         [self close];
         dispatch_async(dispatch_get_main_queue(), ^{
             completionBlock(ret == 0);
