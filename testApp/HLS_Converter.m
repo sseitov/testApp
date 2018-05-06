@@ -320,8 +320,6 @@
             } else {
                 filter = av_bitstream_filter_init("h264_mp4toannexb");
             }
-        } else {
-            filter = av_bitstream_filter_init("aac_adtstoasc");
         }
 
         // read all packets
@@ -356,10 +354,6 @@
                 if (stream_index == self->videoIndex) {
                     ret = [self applyBitstreamFilter:filter packet:&packet outputCodecContext:self->ofmt_ctx->streams[stream_index]->codec];
                 }
-            } else {
-//                if (stream_index == self->audioIndex) {
-//                    ret = [self applyBitstreamFilter:filter packet:&packet outputCodecContext:self->ofmt_ctx->streams[stream_index]->codec];
-//                }
             }
             if (ret < 0) {
                 av_packet_unref(&packet);
