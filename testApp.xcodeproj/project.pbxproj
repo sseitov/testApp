@@ -16,6 +16,33 @@
 		2C449F6B209F2A91004CFA25 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C449F64209F2A91004CFA25 /* libavutil.a */; };
 		2C449F6C209F2A91004CFA25 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C449F65209F2A91004CFA25 /* libavfilter.a */; };
 		2C504751209DB74700C258D2 /* HLS_Converter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C504750209DB74700C258D2 /* HLS_Converter.m */; };
+		2C610F6E20A4C4FB00F0F985 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C610F6D20A4C4FB00F0F985 /* WebViewController.swift */; };
+		2C772E3720A95C23005E41AB /* DLGPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E3320A95C23005E41AB /* DLGPlayer.m */; };
+		2C772E3820A95C23005E41AB /* DLGPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E3620A95C23005E41AB /* DLGPlayerViewController.m */; };
+		2C772E3B20A95C34005E41AB /* DLGPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E3A20A95C34005E41AB /* DLGPlayerView.m */; };
+		2C772E4420A95C45005E41AB /* DLGPlayerRotationVertexShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 2C772E3C20A95C44005E41AB /* DLGPlayerRotationVertexShader.glsl */; };
+		2C772E4620A95C45005E41AB /* DLGPlayerVertexShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 2C772E3E20A95C45005E41AB /* DLGPlayerVertexShader.glsl */; };
+		2C772E4720A95C45005E41AB /* en.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 2C772E3F20A95C45005E41AB /* en.lproj */; };
+		2C772E4820A95C45005E41AB /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = 2C772E4020A95C45005E41AB /* Base.lproj */; };
+		2C772E4920A95C45005E41AB /* DLGPlayerRotationScaleVertexShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 2C772E4120A95C45005E41AB /* DLGPlayerRotationScaleVertexShader.glsl */; };
+		2C772E4A20A95C45005E41AB /* DLGPlayerYUVFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 2C772E4220A95C45005E41AB /* DLGPlayerYUVFragmentShader.glsl */; };
+		2C772E4B20A95C45005E41AB /* DLGPlayerRGBFragmentShader.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 2C772E4320A95C45005E41AB /* DLGPlayerRGBFragmentShader.glsl */; };
+		2C772E5620A95C6A005E41AB /* DLGPlayerVideoRGBFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E4E20A95C69005E41AB /* DLGPlayerVideoRGBFrame.m */; };
+		2C772E5720A95C6A005E41AB /* DLGPlayerVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E4F20A95C69005E41AB /* DLGPlayerVideoFrame.m */; };
+		2C772E5820A95C6A005E41AB /* DLGPlayerAudioFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E5020A95C69005E41AB /* DLGPlayerAudioFrame.m */; };
+		2C772E5920A95C6A005E41AB /* DLGPlayerFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E5120A95C6A005E41AB /* DLGPlayerFrame.m */; };
+		2C772E5A20A95C6A005E41AB /* DLGPlayerVideoYUVFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E5320A95C6A005E41AB /* DLGPlayerVideoYUVFrame.m */; };
+		2C772E5E20A95C7B005E41AB /* DLGPlayerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E5D20A95C7B005E41AB /* DLGPlayerUtils.m */; };
+		2C772E6320A95C8A005E41AB /* DLGPlayerAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E6020A95C8A005E41AB /* DLGPlayerAudioManager.m */; };
+		2C772E6420A95C8A005E41AB /* DLGPlayerDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E6220A95C8A005E41AB /* DLGPlayerDecoder.m */; };
+		2C772E6620A95DFE005E41AB /* PlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C772E6520A95DFE005E41AB /* PlayerController.swift */; };
+		2C772E6820A963B9005E41AB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C772E6720A963B9005E41AB /* QuartzCore.framework */; };
+		2C772E6A20A963CD005E41AB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C772E6920A963CD005E41AB /* CoreGraphics.framework */; };
+		2C772E6C20A963D6005E41AB /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C772E6B20A963D6005E41AB /* Accelerate.framework */; };
+		2C772E6E20A963E1005E41AB /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C772E6D20A963E1005E41AB /* AudioToolbox.framework */; };
+		2C772E7020A963EF005E41AB /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C772E6F20A963EE005E41AB /* CoreAudio.framework */; };
+		2C772E7220A9642D005E41AB /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C772E7120A9642D005E41AB /* OpenGLES.framework */; };
+		2C772E7420A96443005E41AB /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C772E7320A96443005E41AB /* MediaPlayer.framework */; };
 		2CDBD19820824AE5006B08B3 /* AssetCollectionContentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19320824AE5006B08B3 /* AssetCollectionContentController.swift */; };
 		2CDBD19920824AE5006B08B3 /* AddAssetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19420824AE5006B08B3 /* AddAssetController.swift */; };
 		2CDBD19A20824AE5006B08B3 /* AssetCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CDBD19520824AE5006B08B3 /* AssetCollectionCell.swift */; };
@@ -47,6 +74,45 @@
 		2C449F65209F2A91004CFA25 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavfilter.a; path = "FFmpeg-iOS/lib/libavfilter.a"; sourceTree = "<group>"; };
 		2C50474F209DB74700C258D2 /* HLS_Converter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLS_Converter.h; sourceTree = "<group>"; };
 		2C504750209DB74700C258D2 /* HLS_Converter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLS_Converter.m; sourceTree = "<group>"; };
+		2C610F6D20A4C4FB00F0F985 /* WebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		2C772E3320A95C23005E41AB /* DLGPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayer.m; path = DLGPlayer/DLGPlayer.m; sourceTree = "<group>"; };
+		2C772E3420A95C23005E41AB /* DLGPlayerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerViewController.h; path = DLGPlayer/DLGPlayerViewController.h; sourceTree = "<group>"; };
+		2C772E3520A95C23005E41AB /* DLGPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayer.h; path = DLGPlayer/DLGPlayer.h; sourceTree = "<group>"; };
+		2C772E3620A95C23005E41AB /* DLGPlayerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerViewController.m; path = DLGPlayer/DLGPlayerViewController.m; sourceTree = "<group>"; };
+		2C772E3920A95C34005E41AB /* DLGPlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerView.h; path = DLGPlayer/view/DLGPlayerView.h; sourceTree = "<group>"; };
+		2C772E3A20A95C34005E41AB /* DLGPlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerView.m; path = DLGPlayer/view/DLGPlayerView.m; sourceTree = "<group>"; };
+		2C772E3C20A95C44005E41AB /* DLGPlayerRotationVertexShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DLGPlayerRotationVertexShader.glsl; path = DLGPlayer/resource/DLGPlayerRotationVertexShader.glsl; sourceTree = "<group>"; };
+		2C772E3E20A95C45005E41AB /* DLGPlayerVertexShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DLGPlayerVertexShader.glsl; path = DLGPlayer/resource/DLGPlayerVertexShader.glsl; sourceTree = "<group>"; };
+		2C772E3F20A95C45005E41AB /* en.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = en.lproj; path = DLGPlayer/resource/en.lproj; sourceTree = "<group>"; };
+		2C772E4020A95C45005E41AB /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Base.lproj; path = DLGPlayer/resource/Base.lproj; sourceTree = "<group>"; };
+		2C772E4120A95C45005E41AB /* DLGPlayerRotationScaleVertexShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DLGPlayerRotationScaleVertexShader.glsl; path = DLGPlayer/resource/DLGPlayerRotationScaleVertexShader.glsl; sourceTree = "<group>"; };
+		2C772E4220A95C45005E41AB /* DLGPlayerYUVFragmentShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DLGPlayerYUVFragmentShader.glsl; path = DLGPlayer/resource/DLGPlayerYUVFragmentShader.glsl; sourceTree = "<group>"; };
+		2C772E4320A95C45005E41AB /* DLGPlayerRGBFragmentShader.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DLGPlayerRGBFragmentShader.glsl; path = DLGPlayer/resource/DLGPlayerRGBFragmentShader.glsl; sourceTree = "<group>"; };
+		2C772E4C20A95C69005E41AB /* DLGPlayerFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerFrame.h; path = DLGPlayer/frame/DLGPlayerFrame.h; sourceTree = "<group>"; };
+		2C772E4D20A95C69005E41AB /* DLGPlayerVideoYUVFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerVideoYUVFrame.h; path = DLGPlayer/frame/DLGPlayerVideoYUVFrame.h; sourceTree = "<group>"; };
+		2C772E4E20A95C69005E41AB /* DLGPlayerVideoRGBFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerVideoRGBFrame.m; path = DLGPlayer/frame/DLGPlayerVideoRGBFrame.m; sourceTree = "<group>"; };
+		2C772E4F20A95C69005E41AB /* DLGPlayerVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerVideoFrame.m; path = DLGPlayer/frame/DLGPlayerVideoFrame.m; sourceTree = "<group>"; };
+		2C772E5020A95C69005E41AB /* DLGPlayerAudioFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerAudioFrame.m; path = DLGPlayer/frame/DLGPlayerAudioFrame.m; sourceTree = "<group>"; };
+		2C772E5120A95C6A005E41AB /* DLGPlayerFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerFrame.m; path = DLGPlayer/frame/DLGPlayerFrame.m; sourceTree = "<group>"; };
+		2C772E5220A95C6A005E41AB /* DLGPlayerVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerVideoFrame.h; path = DLGPlayer/frame/DLGPlayerVideoFrame.h; sourceTree = "<group>"; };
+		2C772E5320A95C6A005E41AB /* DLGPlayerVideoYUVFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerVideoYUVFrame.m; path = DLGPlayer/frame/DLGPlayerVideoYUVFrame.m; sourceTree = "<group>"; };
+		2C772E5420A95C6A005E41AB /* DLGPlayerAudioFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerAudioFrame.h; path = DLGPlayer/frame/DLGPlayerAudioFrame.h; sourceTree = "<group>"; };
+		2C772E5520A95C6A005E41AB /* DLGPlayerVideoRGBFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerVideoRGBFrame.h; path = DLGPlayer/frame/DLGPlayerVideoRGBFrame.h; sourceTree = "<group>"; };
+		2C772E5B20A95C7A005E41AB /* DLGPlayerDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerDef.h; path = DLGPlayer/common/DLGPlayerDef.h; sourceTree = "<group>"; };
+		2C772E5C20A95C7B005E41AB /* DLGPlayerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerUtils.h; path = DLGPlayer/common/DLGPlayerUtils.h; sourceTree = "<group>"; };
+		2C772E5D20A95C7B005E41AB /* DLGPlayerUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerUtils.m; path = DLGPlayer/common/DLGPlayerUtils.m; sourceTree = "<group>"; };
+		2C772E5F20A95C8A005E41AB /* DLGPlayerAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerAudioManager.h; path = DLGPlayer/codec/DLGPlayerAudioManager.h; sourceTree = "<group>"; };
+		2C772E6020A95C8A005E41AB /* DLGPlayerAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerAudioManager.m; path = DLGPlayer/codec/DLGPlayerAudioManager.m; sourceTree = "<group>"; };
+		2C772E6120A95C8A005E41AB /* DLGPlayerDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DLGPlayerDecoder.h; path = DLGPlayer/codec/DLGPlayerDecoder.h; sourceTree = "<group>"; };
+		2C772E6220A95C8A005E41AB /* DLGPlayerDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DLGPlayerDecoder.m; path = DLGPlayer/codec/DLGPlayerDecoder.m; sourceTree = "<group>"; };
+		2C772E6520A95DFE005E41AB /* PlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerController.swift; sourceTree = "<group>"; };
+		2C772E6720A963B9005E41AB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		2C772E6920A963CD005E41AB /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		2C772E6B20A963D6005E41AB /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		2C772E6D20A963E1005E41AB /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		2C772E6F20A963EE005E41AB /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		2C772E7120A9642D005E41AB /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		2C772E7320A96443005E41AB /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		2CDBD19320824AE5006B08B3 /* AssetCollectionContentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetCollectionContentController.swift; path = AssetPicker/AssetCollectionContentController.swift; sourceTree = "<group>"; };
 		2CDBD19420824AE5006B08B3 /* AddAssetController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddAssetController.swift; path = AssetPicker/AddAssetController.swift; sourceTree = "<group>"; };
 		2CDBD19520824AE5006B08B3 /* AssetCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetCollectionCell.swift; path = AssetPicker/AssetCollectionCell.swift; sourceTree = "<group>"; };
@@ -88,7 +154,14 @@
 				2CE20EE0207DEBD800EA1ADF /* libbz2.tbd in Frameworks */,
 				2CE20EDE207DEBBE00EA1ADF /* libz.tbd in Frameworks */,
 				2CE20EF6207DEC4B00EA1ADF /* AVFoundation.framework in Frameworks */,
+				2C772E6C20A963D6005E41AB /* Accelerate.framework in Frameworks */,
+				2C772E6E20A963E1005E41AB /* AudioToolbox.framework in Frameworks */,
+				2C772E7020A963EF005E41AB /* CoreAudio.framework in Frameworks */,
+				2C772E6A20A963CD005E41AB /* CoreGraphics.framework in Frameworks */,
 				2CE20EF4207DEC4300EA1ADF /* CoreMedia.framework in Frameworks */,
+				2C772E7420A96443005E41AB /* MediaPlayer.framework in Frameworks */,
+				2C772E7220A9642D005E41AB /* OpenGLES.framework in Frameworks */,
+				2C772E6820A963B9005E41AB /* QuartzCore.framework in Frameworks */,
 				2CE20EF2207DEC3800EA1ADF /* VideoToolbox.framework in Frameworks */,
 				00CB42103C80B989AC699D89 /* libPods-testApp.a in Frameworks */,
 			);
@@ -100,6 +173,13 @@
 		0F3298B0E2BA95F3EA4C6268 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2C772E7320A96443005E41AB /* MediaPlayer.framework */,
+				2C772E7120A9642D005E41AB /* OpenGLES.framework */,
+				2C772E6F20A963EE005E41AB /* CoreAudio.framework */,
+				2C772E6D20A963E1005E41AB /* AudioToolbox.framework */,
+				2C772E6B20A963D6005E41AB /* Accelerate.framework */,
+				2C772E6920A963CD005E41AB /* CoreGraphics.framework */,
+				2C772E6720A963B9005E41AB /* QuartzCore.framework */,
 				2C449F5F209F2A90004CFA25 /* libavcodec.a */,
 				2C449F63209F2A91004CFA25 /* libavdevice.a */,
 				2C449F65209F2A91004CFA25 /* libavfilter.a */,
@@ -116,6 +196,83 @@
 				EFDDC38ACBA5FAD245706879 /* libPods-testApp.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2C772E2D20A95B8B005E41AB /* DLGPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				2C772E3520A95C23005E41AB /* DLGPlayer.h */,
+				2C772E3320A95C23005E41AB /* DLGPlayer.m */,
+				2C772E3420A95C23005E41AB /* DLGPlayerViewController.h */,
+				2C772E3620A95C23005E41AB /* DLGPlayerViewController.m */,
+				2C772E3220A95C05005E41AB /* view */,
+				2C772E3120A95BF9005E41AB /* resource */,
+				2C772E3020A95BC9005E41AB /* frame */,
+				2C772E2F20A95BB9005E41AB /* common */,
+				2C772E2E20A95BA5005E41AB /* codec */,
+			);
+			name = DLGPlayer;
+			sourceTree = "<group>";
+		};
+		2C772E2E20A95BA5005E41AB /* codec */ = {
+			isa = PBXGroup;
+			children = (
+				2C772E5F20A95C8A005E41AB /* DLGPlayerAudioManager.h */,
+				2C772E6020A95C8A005E41AB /* DLGPlayerAudioManager.m */,
+				2C772E6120A95C8A005E41AB /* DLGPlayerDecoder.h */,
+				2C772E6220A95C8A005E41AB /* DLGPlayerDecoder.m */,
+			);
+			name = codec;
+			sourceTree = "<group>";
+		};
+		2C772E2F20A95BB9005E41AB /* common */ = {
+			isa = PBXGroup;
+			children = (
+				2C772E5B20A95C7A005E41AB /* DLGPlayerDef.h */,
+				2C772E5C20A95C7B005E41AB /* DLGPlayerUtils.h */,
+				2C772E5D20A95C7B005E41AB /* DLGPlayerUtils.m */,
+			);
+			name = common;
+			sourceTree = "<group>";
+		};
+		2C772E3020A95BC9005E41AB /* frame */ = {
+			isa = PBXGroup;
+			children = (
+				2C772E5420A95C6A005E41AB /* DLGPlayerAudioFrame.h */,
+				2C772E5020A95C69005E41AB /* DLGPlayerAudioFrame.m */,
+				2C772E4C20A95C69005E41AB /* DLGPlayerFrame.h */,
+				2C772E5120A95C6A005E41AB /* DLGPlayerFrame.m */,
+				2C772E5220A95C6A005E41AB /* DLGPlayerVideoFrame.h */,
+				2C772E4F20A95C69005E41AB /* DLGPlayerVideoFrame.m */,
+				2C772E5520A95C6A005E41AB /* DLGPlayerVideoRGBFrame.h */,
+				2C772E4E20A95C69005E41AB /* DLGPlayerVideoRGBFrame.m */,
+				2C772E4D20A95C69005E41AB /* DLGPlayerVideoYUVFrame.h */,
+				2C772E5320A95C6A005E41AB /* DLGPlayerVideoYUVFrame.m */,
+			);
+			name = frame;
+			sourceTree = "<group>";
+		};
+		2C772E3120A95BF9005E41AB /* resource */ = {
+			isa = PBXGroup;
+			children = (
+				2C772E3F20A95C45005E41AB /* en.lproj */,
+				2C772E4020A95C45005E41AB /* Base.lproj */,
+				2C772E4320A95C45005E41AB /* DLGPlayerRGBFragmentShader.glsl */,
+				2C772E4120A95C45005E41AB /* DLGPlayerRotationScaleVertexShader.glsl */,
+				2C772E3C20A95C44005E41AB /* DLGPlayerRotationVertexShader.glsl */,
+				2C772E3E20A95C45005E41AB /* DLGPlayerVertexShader.glsl */,
+				2C772E4220A95C45005E41AB /* DLGPlayerYUVFragmentShader.glsl */,
+			);
+			name = resource;
+			sourceTree = "<group>";
+		};
+		2C772E3220A95C05005E41AB /* view */ = {
+			isa = PBXGroup;
+			children = (
+				2C772E3920A95C34005E41AB /* DLGPlayerView.h */,
+				2C772E3A20A95C34005E41AB /* DLGPlayerView.m */,
+			);
+			name = view;
 			sourceTree = "<group>";
 		};
 		2CDBD19220824ACE006B08B3 /* AssetPicker */ = {
@@ -151,8 +308,11 @@
 		2CE20EC2207DE50300EA1ADF /* testApp */ = {
 			isa = PBXGroup;
 			children = (
+				2C772E2D20A95B8B005E41AB /* DLGPlayer */,
 				2CDBD19220824ACE006B08B3 /* AssetPicker */,
 				2CE20ED5207DE54D00EA1ADF /* TestController.swift */,
+				2C772E6520A95DFE005E41AB /* PlayerController.swift */,
+				2C610F6D20A4C4FB00F0F985 /* WebViewController.swift */,
 				2C50474F209DB74700C258D2 /* HLS_Converter.h */,
 				2C504750209DB74700C258D2 /* HLS_Converter.m */,
 				2CE20EC3207DE50400EA1ADF /* AppDelegate.swift */,
@@ -238,9 +398,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				2CE20ED8207DE8F800EA1ADF /* logo.png in Resources */,
+				2C772E4420A95C45005E41AB /* DLGPlayerRotationVertexShader.glsl in Resources */,
+				2C772E4A20A95C45005E41AB /* DLGPlayerYUVFragmentShader.glsl in Resources */,
+				2C772E4B20A95C45005E41AB /* DLGPlayerRGBFragmentShader.glsl in Resources */,
+				2C772E4820A95C45005E41AB /* Base.lproj in Resources */,
+				2C772E4920A95C45005E41AB /* DLGPlayerRotationScaleVertexShader.glsl in Resources */,
+				2C772E4620A95C45005E41AB /* DLGPlayerVertexShader.glsl in Resources */,
 				2CE20ECE207DE50C00EA1ADF /* LaunchScreen.storyboard in Resources */,
 				2CE20ECB207DE50C00EA1ADF /* Assets.xcassets in Resources */,
 				2CDBD19B20824AE5006B08B3 /* AssetPicker.storyboard in Resources */,
+				2C772E4720A95C45005E41AB /* en.lproj in Resources */,
 				2CE20EC9207DE50400EA1ADF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -292,12 +459,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C504751209DB74700C258D2 /* HLS_Converter.m in Sources */,
+				2C610F6E20A4C4FB00F0F985 /* WebViewController.swift in Sources */,
 				2CE20EC4207DE50400EA1ADF /* AppDelegate.swift in Sources */,
+				2C772E6420A95C8A005E41AB /* DLGPlayerDecoder.m in Sources */,
+				2C772E6320A95C8A005E41AB /* DLGPlayerAudioManager.m in Sources */,
+				2C772E5820A95C6A005E41AB /* DLGPlayerAudioFrame.m in Sources */,
+				2C772E5A20A95C6A005E41AB /* DLGPlayerVideoYUVFrame.m in Sources */,
 				2CDBD19A20824AE5006B08B3 /* AssetCollectionCell.swift in Sources */,
+				2C772E5E20A95C7B005E41AB /* DLGPlayerUtils.m in Sources */,
 				2CDBD19920824AE5006B08B3 /* AddAssetController.swift in Sources */,
+				2C772E3B20A95C34005E41AB /* DLGPlayerView.m in Sources */,
+				2C772E6620A95DFE005E41AB /* PlayerController.swift in Sources */,
 				2CDBD19C20824AE5006B08B3 /* PHAssetCell.swift in Sources */,
+				2C772E3820A95C23005E41AB /* DLGPlayerViewController.m in Sources */,
 				2CE20ED6207DE54D00EA1ADF /* TestController.swift in Sources */,
+				2C772E5920A95C6A005E41AB /* DLGPlayerFrame.m in Sources */,
+				2C772E5620A95C6A005E41AB /* DLGPlayerVideoRGBFrame.m in Sources */,
+				2C772E5720A95C6A005E41AB /* DLGPlayerVideoFrame.m in Sources */,
 				2CE20EF8207DEF3100EA1ADF /* Utils.swift in Sources */,
+				2C772E3720A95C23005E41AB /* DLGPlayer.m in Sources */,
 				2CDBD19820824AE5006B08B3 /* AssetCollectionContentController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

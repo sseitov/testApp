@@ -110,13 +110,28 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     }
     
     // MARK: - Navigation
+    
+    func videoRotation() -> Int {
+        if let vm = meta!["videoMeta"] as? [String:Any] {
+            if let rotate = vm["rotate"] as? String {
+                if rotate == "270" {
+                    return 3
+                } else if rotate == "180" {
+                    return 2
+                } else if rotate == "90" {
+                    return 1
+                }
+            }
+        }
+        return 0
+    }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let url = sender as! URL
         if segue.identifier == "showMovie" {
-            let player = AVPlayer(url: url)
-            let next = segue.destination as! AVPlayerViewController
-            next.player = player
+            let next = segue.destination as! PlayerController
+            next.url = url
+            next.rotation = videoRotation()
         }
     }
     
@@ -221,11 +236,11 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         try? FileManager.default.copyItem(at: url, to: outURL)
         let tsURL = mediaDirectory().appendingPathComponent("index.m3u8")
         convertVideo(outURL, to: tsURL, info: nil, result: { info in
-            try? FileManager.default.removeItem(at: tsURL)
+//            try? FileManager.default.removeItem(at: tsURL)
             if info != nil {
                 self.meta = info
                 print("import success")
-                self.exportTS()
+//                self.exportTS()
             }
             self.refresh()
         })
@@ -262,9 +277,9 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     
     @IBAction func export(_ sender: Any) {
 //        let url = URL(string: "https://bitmovin-a.akamaihd.net/content/dataset/multi-codec/hevc/stream_fmp4.m3u8")
-//        let url = URL(string: "http://127.0.0.1:8080/index.m3u8")
-//        performSegue(withIdentifier: "showMovie", sender: url)
-
+        let url = URL(string: "http://127.0.0.1:8080/index.m3u8")
+        performSegue(withIdentifier: "showMovie", sender: url)
+/*
         let tsFile = mediaDirectory().appendingPathComponent("output.ts")
 //        let tsFile = mediaDirectory().appendingPathComponent("index.m3u8")
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
@@ -274,7 +289,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
             if info != nil {
                 print("success")
                 self.refresh()
-/*
+
                 PHPhotoLibrary.shared().performChanges({
                     PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: exportURL)
                 }, completionHandler: { completed, error in
@@ -286,12 +301,12 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                         }
                     }
                 })
- */
+ 
             } else {
                 print("error")
             }
         })
- 
+*/
     }
 
     private func convertVideo(_ from:URL, to:URL, info:[AnyHashable : Any]?, result: (([AnyHashable : Any]?) -> Void)!) {

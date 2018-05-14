@@ -10,3 +10,4 @@
 #import <GCDWebServer/GCDWebServerStreamedResponse.h>
 
 #import "HLS_Converter.h"
+#import "DLGPlayer.h"
