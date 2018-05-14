@@ -49,11 +49,6 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     
     func refresh() {
         files = dirContent(mediaDirectory())
-/*
-        files = dirContent(mediaDirectory()).filter({ file in
-            return file.pathExtension.lowercased() == "mov"
-        })
- */
         tableView.reloadData()
     }
 
@@ -136,34 +131,38 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     }
     
     @IBAction func addMoview(_ sender: Any) {
-        AddAssetController.checkPermission({ enabled in
-            if enabled {
-                let picker = UIStoryboard(name: "AssetPicker", bundle: nil)
-                let nav = picker.instantiateViewController(withIdentifier: "AssetPicker") as? UINavigationController
-                if nav != nil {
-                    if let controller = nav!.topViewController as? AddAssetController {
-                        controller.delegate = self
+        let alert = UIAlertController(title: "Open", message: "Select source", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Camera Roll", style: .default, handler: { action in
+            AddAssetController.checkPermission({ enabled in
+                if enabled {
+                    let picker = UIStoryboard(name: "AssetPicker", bundle: nil)
+                    let nav = picker.instantiateViewController(withIdentifier: "AssetPicker") as? UINavigationController
+                    if nav != nil {
+                        if let controller = nav!.topViewController as? AddAssetController {
+                            controller.delegate = self
+                        }
+                        nav!.modalPresentationStyle = .formSheet
+                        self.present(nav!, animated: true, completion: nil)
                     }
-                    nav!.modalPresentationStyle = .formSheet
-                    self.present(nav!, animated: true, completion: nil)
+                } else {
+                    print("You must enable access to Photo Library in cryptoBox settings.")
                 }
-            } else {
-                print("You must enable access to Photo Library in cryptoBox settings.")
+            })
+        }))
+        alert.addAction(UIAlertAction(title: "Camera", style: .default, handler: { action in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                let imagePickerController = UIImagePickerController()
+                imagePickerController.sourceType = .camera
+                imagePickerController.mediaTypes = UIImagePickerController.availableMediaTypes(for: .camera)!
+                imagePickerController.delegate = self
+                imagePickerController.allowsEditing = false
+                imagePickerController.videoQuality = .typeHigh
+                self.present(imagePickerController, animated: true, completion:nil)
             }
-        })
- /*
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-            let imagePickerController = UIImagePickerController()
-            imagePickerController.sourceType = .photoLibrary
-            imagePickerController.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
-            imagePickerController.delegate = self
-            imagePickerController.allowsEditing = false
-            imagePickerController.videoQuality = .typeHigh
-            self.present(imagePickerController, animated: true, completion:nil)
-        }
- */
+        }))
+        present(alert, animated: true, completion: nil)
     }
-/*
+
     // MARK: - UIImagePickerController delegate
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
@@ -171,25 +170,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         picker.dismiss(animated: true, completion: {
             if mediaType == kUTTypeMovie as String {
                 if let url = info[UIImagePickerControllerMediaURL] as? URL {
-                    let name = "\(self.dateFormatter.string(from: Date())).MOV"
-                    let dstURL = mediaDirectory().appendingPathComponent(name)
-                    self.clear()
-                    do {
-                        try FileManager.default.copyItem(at: url, to: dstURL)
-                        let hlsURL = mediaDirectory().appendingPathComponent("index.m3u8")
-                        self.convertVideo(dstURL, to: hlsURL, info: nil, result: { meta in
-                            if meta != nil {
-                                self.meta = meta
-                                print(meta!)
-                                self.refresh()
-                            } else {
-                                print("import error")
-                                self.clear()
-                            }
-                        })
-                    } catch {
-                        print(error.localizedDescription)
-                    }
+                    self.importURL(url)
                 }
             }
         })
@@ -199,7 +180,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
- */
+ 
     // MARK: - AddAssetControllerDelegate
     
     func didAssetPickerSelected(_ selectedAssets:NSMutableArray) {
