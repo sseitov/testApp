@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -55,19 +56,34 @@
                                 <action selector="export:" destination="doO-pi-aoT" id="rbo-KV-Ot4"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="yNo-SK-K2H">
-                            <connections>
-                                <action selector="addMoview:" destination="doO-pi-aoT" id="aQH-3O-oi0"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem systemItem="add" id="yNo-SK-K2H">
+                                <connections>
+                                    <action selector="addMoview:" destination="doO-pi-aoT" id="aQH-3O-oi0"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="play" id="Mhf-QH-Xer">
+                                <connections>
+                                    <action selector="play:" destination="doO-pi-aoT" id="g0O-mP-Fe5"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <segue destination="X1o-TT-bfw" kind="show" identifier="showMovie" id="Yly-vj-N5k"/>
+                        <segue destination="zf1-v2-sqI" kind="presentation" identifier="showMovie" id="jTv-rH-JTq"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JN4-Nk-th3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="748" y="145"/>
+        </scene>
+        <!--AV Player View Controller-->
+        <scene sceneID="u5E-oJ-K85">
+            <objects>
+                <avPlayerViewController videoGravity="AVLayerVideoGravityResizeAspect" id="zf1-v2-sqI" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pjW-Ve-bA2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1644" y="144"/>
         </scene>
         <!--Player Controller-->
         <scene sceneID="irM-br-I4J">
@@ -78,7 +94,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="70n-eU-JID">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
@@ -97,7 +113,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aum-7I-fMX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1613" y="144"/>
+            <point key="canvasLocation" x="1690" y="815"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="VQm-D3-f8k">

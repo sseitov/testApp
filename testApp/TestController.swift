@@ -124,9 +124,10 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let url = sender as! URL
         if segue.identifier == "showMovie" {
-            let next = segue.destination as! PlayerController
-            next.url = url
-            next.rotation = videoRotation()
+            let next = segue.destination as! AVPlayerViewController //PlayerController
+            next.player = AVPlayer(url: url)
+//            next.url = url
+//            next.rotation = videoRotation()
         }
     }
     
@@ -228,7 +229,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     }
     
     // MARK: - Export
-
+/*
     func exportTS() {
 
         let tsContent = dirContent(mediaDirectory()).filter( {url in
@@ -255,18 +256,17 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         }
         stream?.close()
     }
-    
-    @IBAction func export(_ sender: Any) {
-//        let url = URL(string: "https://bitmovin-a.akamaihd.net/content/dataset/multi-codec/hevc/stream_fmp4.m3u8")
+ */
+    @IBAction func play(_ sender: Any) {
         let url = URL(string: "http://127.0.0.1:8080/index.m3u8")
         performSegue(withIdentifier: "showMovie", sender: url)
-/*
-        let tsFile = mediaDirectory().appendingPathComponent("output.ts")
-//        let tsFile = mediaDirectory().appendingPathComponent("index.m3u8")
+    }
+    
+    @IBAction func export(_ sender: Any) {
+//        let url = URL(string: "http://127.0.0.1:8080/index.m3u8")
+        let url = mediaDirectory().appendingPathComponent("index.m3u8")
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
-        convertVideo(tsFile, to: exportURL, info: meta!, result: { info in
-            try? FileManager.default.removeItem(at: tsFile)
-            self.refresh()
+        convertVideo(url, to: exportURL, info: meta!, result: { info in
             if info != nil {
                 print("success")
                 self.refresh()
@@ -287,7 +287,6 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
                 print("error")
             }
         })
-*/
     }
 
     private func convertVideo(_ from:URL, to:URL, info:[AnyHashable : Any]?, result: (([AnyHashable : Any]?) -> Void)!) {
