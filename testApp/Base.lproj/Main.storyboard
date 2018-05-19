@@ -51,11 +51,18 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="I3h-ks-gxm">
-                        <barButtonItem key="leftBarButtonItem" systemItem="action" id="hJT-Vx-2yy">
-                            <connections>
-                                <action selector="export:" destination="doO-pi-aoT" id="rbo-KV-Ot4"/>
-                            </connections>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem systemItem="action" id="hJT-Vx-2yy">
+                                <connections>
+                                    <action selector="export:" destination="doO-pi-aoT" id="rbo-KV-Ot4"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="trash" id="JxT-fL-LMX">
+                                <connections>
+                                    <action selector="clear:" destination="doO-pi-aoT" id="6sh-nT-t9x"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <rightBarButtonItems>
                             <barButtonItem systemItem="add" id="yNo-SK-K2H">
                                 <connections>

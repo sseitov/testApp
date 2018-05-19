@@ -257,6 +257,11 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         stream?.close()
     }
  */
+    @IBAction func clear(_ sender: Any) {
+        clear()
+        refresh()
+    }
+    
     @IBAction func play(_ sender: Any) {
         let url = URL(string: "http://127.0.0.1:8080/index.m3u8")
         performSegue(withIdentifier: "showMovie", sender: url)
