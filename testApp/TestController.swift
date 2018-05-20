@@ -216,7 +216,7 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
         let outURL = mediaDirectory().appendingPathComponent("original.mov")
         print(outURL.relativePath)
         try? FileManager.default.copyItem(at: url, to: outURL)
-        let tsURL = mediaDirectory().appendingPathComponent("index.m3u8")
+        let tsURL = mediaDirectory().appendingPathComponent("list.m3u8")
         convertVideo(outURL, to: tsURL, info: nil, result: { info in
 //            try? FileManager.default.removeItem(at: tsURL)
             if info != nil {
@@ -263,13 +263,13 @@ class TestController: UITableViewController, UINavigationControllerDelegate, UII
     }
     
     @IBAction func play(_ sender: Any) {
-        let url = URL(string: "http://127.0.0.1:8080/index.m3u8")
+        let url = URL(string: "http://127.0.0.1:8080/list.m3u8")
         performSegue(withIdentifier: "showMovie", sender: url)
     }
     
     @IBAction func export(_ sender: Any) {
 //        let url = URL(string: "http://127.0.0.1:8080/index.m3u8")
-        let url = mediaDirectory().appendingPathComponent("index.m3u8")
+        let url = mediaDirectory().appendingPathComponent("list.m3u8")
         let exportURL = mediaDirectory().appendingPathComponent("export.mov")
         convertVideo(url, to: exportURL, info: meta!, result: { info in
             if info != nil {
