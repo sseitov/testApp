@@ -7,7 +7,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -91,86 +90,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pjW-Ve-bA2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1644" y="144"/>
-        </scene>
-        <!--Player Controller-->
-        <scene sceneID="irM-br-I4J">
-            <objects>
-                <viewController id="X1o-TT-bfw" customClass="PlayerController" customModule="testApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="oVM-c1-1kn">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="70n-eU-JID">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="70n-eU-JID" firstAttribute="leading" secondItem="Lxg-LM-vGO" secondAttribute="leading" id="C8O-R5-6gC"/>
-                            <constraint firstItem="70n-eU-JID" firstAttribute="top" secondItem="Lxg-LM-vGO" secondAttribute="top" id="D4f-ly-YGa"/>
-                            <constraint firstItem="Lxg-LM-vGO" firstAttribute="bottom" secondItem="70n-eU-JID" secondAttribute="bottom" id="pZk-HN-Ka8"/>
-                            <constraint firstItem="Lxg-LM-vGO" firstAttribute="trailing" secondItem="70n-eU-JID" secondAttribute="trailing" id="wkL-aP-Fyz"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="Lxg-LM-vGO"/>
-                    </view>
-                    <connections>
-                        <outlet property="videoView" destination="70n-eU-JID" id="EOG-zA-3oX"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aum-7I-fMX" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1690" y="815"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="VQm-D3-f8k">
-            <objects>
-                <navigationController id="s8V-nb-6JW" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eGw-Rl-KXE">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="OSn-NZ-GDl" kind="relationship" relationship="rootViewController" id="1Tg-tZ-x10"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="wAh-H2-Qk5" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-66" y="869"/>
-        </scene>
-        <!--Web View Controller-->
-        <scene sceneID="fQX-bC-LTz">
-            <objects>
-                <viewController id="OSn-NZ-GDl" customClass="WebViewController" customModule="testApp" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="mcQ-WU-AqE">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e6e-wX-HeW">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <connections>
-                                    <outlet property="delegate" destination="OSn-NZ-GDl" id="tBh-nX-gIM"/>
-                                </connections>
-                            </webView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="e6e-wX-HeW" firstAttribute="top" secondItem="EGL-VE-ZEa" secondAttribute="top" id="Q8O-kq-8RL"/>
-                            <constraint firstItem="EGL-VE-ZEa" firstAttribute="bottom" secondItem="e6e-wX-HeW" secondAttribute="bottom" id="Ru8-NB-DOc"/>
-                            <constraint firstItem="e6e-wX-HeW" firstAttribute="leading" secondItem="EGL-VE-ZEa" secondAttribute="leading" id="oSW-UJ-6R7"/>
-                            <constraint firstItem="EGL-VE-ZEa" firstAttribute="trailing" secondItem="e6e-wX-HeW" secondAttribute="trailing" id="rTO-f0-8GZ"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="EGL-VE-ZEa"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="DPw-OW-DCt"/>
-                    <connections>
-                        <outlet property="webView" destination="e6e-wX-HeW" id="QGo-ti-9eq"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fJc-8z-dOv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="748" y="869"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FDK-fc-Ils">

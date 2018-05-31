@@ -207,10 +207,7 @@
     }
     
     if (info == NULL) {
-        av_opt_set(ofmt_ctx->priv_data, "hls_segment_type", "fmp4", 0);
-//        av_opt_set(ofmt_ctx->priv_data, "hls_playlist_type", "event", 0);
-//        av_opt_set_int(ofmt_ctx->priv_data, "hls_time", 6, 0);
-//        av_opt_set_int(ofmt_ctx->priv_data, "hls_list_size", 10, 0);
+//        av_opt_set(ofmt_ctx->priv_data, "hls_segment_type", "fmp4", 0);
         av_opt_set_int(ofmt_ctx->priv_data, "hls_list_size", 0, 0);
     }
     
